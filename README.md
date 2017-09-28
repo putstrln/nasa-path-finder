@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/lovetostrike/nasa-path-finder.svg?style=svg)](https://circleci.com/gh/lovetostrike/nasa-path-finder)
+
 ## Development
 
 Install yarn if you don't have it, https://yarnpkg.com/lang/en/docs/install/#linux-tab.
@@ -31,3 +33,7 @@ To run native app, build it for production first and then,
 * API code lives in ```src/utils```.
 
 ## Continuous Delivery
+
+Builds are executed on every merge on https://circleci.com/gh/lovetostrike and on successful build,
+docker image is built at https://hub.docker.com/r/lovetostrike/nasa-path-finder/.
+The latest build is hosted on *coming soon*.
