@@ -36,5 +36,5 @@ jobs:
       # run tests!
       - run: yarn test
 
-			# build image
+      # build image
       - run: curl -H "Content-Type: application/json" --data '{"build": true}' -X POST https://registry.hub.docker.com/u/lovetostrike/nasa-path-finder/trigger/9418ea72-6670-4ad4-bfd4-eada61165580/
