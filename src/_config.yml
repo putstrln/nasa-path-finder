@@ -17,16 +17,16 @@ title: NASA Path Finder
 email: your-email@example.com
 description: >- # this means to ignore newlines until "baseurl:"
   A shortest path finder for 3D models of ISS
-baseurl: "" # the subpath of your site, e.g. /blog
+baseurl: "/nasa-path-finder" # the subpath of your site, e.g. /blog
 url: "" # the base hostname & protocol for your site, e.g. http://example.com
-twitter_username: jekyllrb
-github_username:  jekyll
+#twitter_username: jekyllrb
+github_username:  lovetostrike
 
 # Build settings
 markdown: kramdown
 theme: jekyll-theme-slate
-plugins:
-  - jekyll-feed
+# plugins:
+#   - jekyll-feed
 
 # Exclude from processing.
 # The following items will not be processed, by default. Create a custom list
