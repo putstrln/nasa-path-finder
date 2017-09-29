@@ -1,6 +1,106 @@
----
-layout: default
-title: NASA Path Finder
----
-{% capture readme_include %}{% include README.md %}{% endcapture %}
-{{ readme_include | markdownify }}
+<!DOCTYPE html>
+<html lang="en-US">
+
+  <head>
+    <meta charset='utf-8'>
+    <meta http-equiv="X-UA-Compatible" content="chrome=1">
+    <meta name="viewport" content="width=device-width,maximum-scale=2">
+    <meta name="description" content="NASA Path Finder : A shortest path finder for 3D models of ISS">
+
+    <link rel="stylesheet" type="text/css" media="screen" href="/assets/css/style.css?v=664f792d9f1720b4d64254acd18d149184b414ba">
+
+<!-- Begin Jekyll SEO tag v2.3.0 -->
+<title>NASA Path Finder | A shortest path finder for 3D models of ISS</title>
+<meta property="og:title" content="NASA Path Finder" />
+<meta property="og:locale" content="en_US" />
+<meta name="description" content="A shortest path finder for 3D models of ISS" />
+<meta property="og:description" content="A shortest path finder for 3D models of ISS" />
+<link rel="canonical" href="/" />
+<meta property="og:url" content="/" />
+<meta property="og:site_name" content="NASA Path Finder" />
+<script type="application/ld+json">
+{"name":"NASA Path Finder","description":"A shortest path finder for 3D models of ISS","author":null,"@type":"WebSite","url":"/","publisher":null,"image":null,"headline":"NASA Path Finder","dateModified":null,"datePublished":null,"sameAs":null,"mainEntityOfPage":null,"@context":"http://schema.org"}</script>
+<!-- End Jekyll SEO tag -->
+
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="http://github.com/lovetostrike/nasa-path-finder">View on GitHub</a>
+
+          <h1 id="project_title">NASA Path Finder</h1>
+          <h2 id="project_tagline">A shortest path finder for 3D models of ISS</h2>
+
+          
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        
+<p><a href="https://circleci.com/gh/lovetostrike/nasa-path-finder"><img src="https://circleci.com/gh/lovetostrike/nasa-path-finder.svg?style=svg" alt="CircleCI" /></a></p>
+
+<h2 id="demo">Demo</h2>
+<p>Demo is available on <a href="https://lovetostrike.github.io/nasa-path-finder">https://lovetostrike.github.io/nasa-path-finder</a>.</p>
+
+<h2 id="development">Development</h2>
+
+<p>Install yarn if you don’t have it, <a href="https://yarnpkg.com/lang/en/docs/install/#linux-tab">https://yarnpkg.com/lang/en/docs/install/#linux-tab</a>.</p>
+
+<p>Install dependencies if you haven’t,</p>
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>yarn
+</code></pre>
+</div>
+
+<p>Start dev server</p>
+<div class="language-sh highlighter-rouge"><pre class="highlight"><code>yarn start
+</code></pre>
+</div>
+<p>and go to <a href="http://localhost:3000">http://localhost:3000</a> to see the app.</p>
+
+<p>To build for production</p>
+<div class="highlighter-rouge"><pre class="highlight"><code>yarn build
+</code></pre>
+</div>
+
+<p>To run native app, build it for production first and then,
+<code class="highlighter-rouge">yarn start:native</code></p>
+
+<h2 id="test">Test</h2>
+<p><code class="highlighter-rouge">yarn test</code></p>
+
+<h2 id="structure">Structure</h2>
+
+<ul>
+  <li>UI Components are React components and live in <code class="highlighter-rouge">src/components</code>.
+You can learn more at <a href="https://facebook.github.io/react/tutorial/tutorial.html">https://facebook.github.io/react/tutorial/tutorial.html</a></li>
+  <li>API code lives in <code class="highlighter-rouge">src/utils</code>.</li>
+</ul>
+
+<h2 id="continuous-delivery">Continuous Delivery</h2>
+
+<p>Builds are executed on every merge at <a href="https://circleci.com/gh/lovetostrike/nasa-path-finder/">https://circleci.com/gh/lovetostrike/nasa-path-finder/</a> and on successful build,
+docker image is built at <a href="https://hub.docker.com/r/lovetostrike/nasa-path-finder/">https://hub.docker.com/r/lovetostrike/nasa-path-finder/</a>.
+The latest build is hosted on <em>coming soon</em>.</p>
+
+
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        
+        <p class="copyright">NASA Path Finder maintained by <a href="http://github.com/lovetostrike">lovetostrike</a></p>
+        
+        <p>Published with <a href="https://pages.github.com">GitHub Pages</a></p>
+      </footer>
+    </div>
+
+    
+  </body>
+</html>
