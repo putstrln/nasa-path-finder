@@ -1,1 +1,6 @@
-123 testing
+---
+layout: default
+title: NASA Path Finder
+---
+{% capture readme_include %}{% include README.md %}{% endcapture %}
+{{ readme_include | markdownify }}
