@@ -3,4 +3,4 @@ node_modules
 coverage
 public/
 .sass-cache/
-
+_site
