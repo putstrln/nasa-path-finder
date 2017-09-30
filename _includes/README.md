@@ -1,7 +1,7 @@
 [![CircleCI](https://circleci.com/gh/lovetostrike/nasa-path-finder.svg?style=svg)](https://circleci.com/gh/lovetostrike/nasa-path-finder)
 
 ## Demo
-Demo is available on <https://lovetostrike.github.io/nasa-path-finder>.
+Demo is available on <https://lovetostrike.github.io/nasa-path-finder/demo.html>.
 
 ## Development
 
@@ -37,6 +37,8 @@ To run native app, build it for production first and then,
 
 ## Continuous Delivery
 
+There are both OS and web builds available. Web build is just a static html/js/css and OS builds use electron for different distributions.
+
 Builds are executed on every merge at <https://circleci.com/gh/lovetostrike/nasa-path-finder/> and on successful build,
 docker image is built at <https://hub.docker.com/r/lovetostrike/nasa-path-finder/>.
-The latest build is hosted on *coming soon*.
+The latest web build is hosted on the demo page.
