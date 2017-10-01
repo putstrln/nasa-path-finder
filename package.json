@@ -9,6 +9,7 @@
     "lint": "eslint --ext js --ext jsx src || exit 0",
     "start": "webpack-dashboard -- webpack-dev-server",
     "start:native": "electron .",
+    "start:web": "http-server",
     "test": "NODE_ENV=test jest"
   },
   "repository": {
@@ -73,5 +74,8 @@
     "moduleDirectories": [
       "node_modules"
     ]
+  },
+  "engines": {
+    "node": ">=8" 
   }
 }
