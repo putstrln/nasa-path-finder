@@ -1,10 +1,13 @@
 import React from 'react';
-import {plus} from 'utils/math/math';
+import Renderer from 'components/Renderer/Renderer';
 
 export default class Container extends React.Component {
   render() {
     return (
-      <div>1 + 2 = {plus(1, 2)}</div>
+      <div>
+        NASA
+        <Renderer />
+      </div>
     );
   }
 }

@@ -24,7 +24,10 @@
     "node-sass": "^4.3.0",
     "react": "15.6.1",
     "react-dom": "15.4.2",
-    "sass-loader": "^6.0.2"
+    "sass-loader": "^6.0.2",
+    "stats-js": "^1.0.0-alpha1",
+    "stats.js": "^0.17.0",
+    "three": "^0.87.1"
   },
   "devDependencies": {
     "babel-core": "^6.23.1",
@@ -74,8 +77,5 @@
     "moduleDirectories": [
       "node_modules"
     ]
-  },
-  "engines": {
-    "node": ">=8" 
   }
 }
