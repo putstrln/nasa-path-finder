@@ -1,7 +1,7 @@
 [![CircleCI](https://circleci.com/gh/lovetostrike/nasa-path-finder.svg?style=svg)](https://circleci.com/gh/lovetostrike/nasa-path-finder)
 
 ## Demo
-Demo is available at  <https://lovetostrike.github.io/nasa-path-finder>.
+Demo is available at  <https://lovetostrike.github.io/nasa-path-finder/demo.html>.
 
 ## Development
 
