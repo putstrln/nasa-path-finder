@@ -20,6 +20,7 @@
   "homepage": "https://github.com/lovetostrike/nasa-path-finder#readme",
   "dependencies": {
     "babel-polyfill": "^6.26.0",
+    "clean-webpack-plugin": "^0.1.17",
     "electron": "^1.7.8",
     "node-sass": "^4.3.0",
     "react": "15.6.1",
@@ -56,7 +57,6 @@
     "style-loader": "0.13.1",
     "url-loader": "0.5.7",
     "webpack": "^3.3.0",
-    "webpack-cleanup-plugin": "^0.4.2",
     "webpack-dashboard": "^0.3.0",
     "webpack-dev-server": "^2.4.1"
   },

@@ -1,9 +1,9 @@
-var webpack = require('webpack');
-var path = require('path');
-var loaders = require('./webpack.loaders');
-var HtmlWebpackPlugin = require('html-webpack-plugin');
-var WebpackCleanupPlugin = require('webpack-cleanup-plugin');
-var ExtractTextPlugin = require('extract-text-webpack-plugin');
+const webpack = require('webpack');
+const path = require('path');
+const loaders = require('./webpack.loaders');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin')
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 loaders.push({
   test: /\.scss$/,
@@ -32,7 +32,11 @@ module.exports = {
     loaders
   },
   plugins: [
-    new WebpackCleanupPlugin(['public'], {exclude: ['models']}),
+    new CleanWebpackPlugin([
+      'public/*.js',
+      'public/index.html',
+      'public/style.css'
+    ]),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: '"production"'

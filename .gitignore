@@ -3,3 +3,6 @@ node_modules
 coverage
 .sass-cache/
 _site
+public/*.js
+public/style.css
+public/index.html
