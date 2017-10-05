@@ -32,7 +32,7 @@ module.exports = {
     loaders
   },
   plugins: [
-    new WebpackCleanupPlugin(),
+    new WebpackCleanupPlugin(['public'], {exclude: ['models']}),
     new webpack.DefinePlugin({
       'process.env': {
         NODE_ENV: '"production"'

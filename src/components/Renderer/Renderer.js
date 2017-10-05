@@ -21,48 +21,73 @@ export default class Renderer extends React.Component {
     if (!Detector.webgl) {
       Detector.addGetWebGLMessage();
     }
-    this.camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 1, 15);
-    // this.camera.position.set(3, 0.15, 3);
+    this.camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.01, 5000);
+    this.camera.position.set(0, 0, 0);
     this.cameraTarget = new THREE.Vector3(0, -0.25, 0);
     this.scene = new THREE.Scene();
-    // this.scene.background = new THREE.Color(0x72645b);
-    // this.scene.fog = new THREE.Fog(0x72645b, 2, 15);
+    this.scene.background = new THREE.Color(0x72645b);
+    this.scene.fog = new THREE.Fog(0x72645b, 2, 15);
     // Ground
-    // const plane = new THREE.Mesh(
-    //   new THREE.PlaneBufferGeometry(40, 40),
-    //   new THREE.MeshPhongMaterial({color: 0x999999, specular: 0x101010})
-    // );
-    // plane.rotation.x = -Math.PI/2;
-    // plane.position.y = -0.5;
-    // this.scene.add(plane);
-    // plane.receiveShadow = true;
+    const plane = new THREE.Mesh(
+      new THREE.PlaneBufferGeometry(40, 40),
+      new THREE.MeshPhongMaterial({color: 0x999999, specular: 0x101010})
+    );
+    plane.rotation.x = -Math.PI/2;
+    plane.position.y = -0.5;
+    this.scene.add(plane);
+    plane.receiveShadow = true;
     // ASCII file
     const loader = new THREE.STLLoader();
-    loader.load('./slotted_disk.stl', geometry => {
+    // loader.load('./slotted_disk.stl', geometry => {
+    //   console.log('disk geom', geometry)
+    //   const material = new THREE.MeshPhongMaterial({color: 0xff5533, specular: 0x111111, shininess: 200});
+    //   const mesh = new THREE.Mesh(geometry, material);
+    //   mesh.position.set(0, 0, 0);
+    //   mesh.rotation.set(0, - Math.PI / 2, 0);
+    //   mesh.scale.set(0.5, 0.5, 0.5);
+    //   mesh.castShadow = false;
+    //   mesh.receiveShadow = false;
+    //   var box = new THREE.Box3().setFromObject( mesh );
+    //   console.log('disk', box.min, box.max, box.size() );
+    //   this.scene.add(mesh);
+    // });
+    loader.load('./models/S0_3538.fixed.stl', geometry => {
+      // center it to the bounding box
+      geometry.center();
       const material = new THREE.MeshPhongMaterial({color: 0xff5533, specular: 0x111111, shininess: 200});
       const mesh = new THREE.Mesh(geometry, material);
-      mesh.position.set(0, - 0.25, 0.6);
+      mesh.position.set(0, 0, 0);
       mesh.rotation.set(0, - Math.PI / 2, 0);
-      mesh.scale.set(0.5, 0.5, 0.5);
-      mesh.castShadow = false;
-      mesh.receiveShadow = false;
+      // the models are in inches, scale back to meters
+      mesh.scale.set(0.025, 0.025, 0.025);
+      mesh.castShadow = true;
       var box = new THREE.Box3().setFromObject( mesh );
-      console.log('disk', box.min, box.max, box.size() );
       this.scene.add(mesh);
     });
-    loader.load('./S0_3538.stl', geometry => {
-      geometry.computeBoundingBox();
+    loader.load('./models/GAP_SPAN_0288_0259.fixed.stl', geometry => {
+      // center it to the bounding box
+      geometry.center();
       const material = new THREE.MeshPhongMaterial({color: 0xff5533, specular: 0x111111, shininess: 200});
       const mesh = new THREE.Mesh(geometry, material);
-      console.log(mesh)
-      mesh.position.set(0, - 0.37, 0.6);
-      // mesh.rotation.set(0, - Math.PI / 2, 0);
-      // mesh.scale.set(0.05, 0.05, 0.05);
-      // mesh.castShadow = true;
-      // mesh.receiveShadow = true;
+      mesh.position.set(0, 0, 0);
+      mesh.rotation.set(90, 0, 0);
+      // the models are in inches, scale back to meters
+      mesh.scale.set(0.025, 0.025, 0.025);
+      mesh.castShadow = true;
       var box = new THREE.Box3().setFromObject( mesh );
-console.log('handrail', box.min, box.max, box.size() );
-      console.log('rail pos', mesh.position);
+      this.scene.add(mesh);
+    });
+    loader.load('./models/LAB_0208.fixed.stl', geometry => {
+      // center it to the bounding box
+      geometry.center();
+      const material = new THREE.MeshPhongMaterial({color: 0xff5533, specular: 0x111111, shininess: 200});
+      const mesh = new THREE.Mesh(geometry, material);
+      mesh.position.set(0.5, 0, 0);
+      mesh.rotation.set(90, - Math.PI / 2, 0);
+      // the models are in inches, scale back to meters
+      mesh.scale.set(0.025, 0.025, 0.025);
+      mesh.castShadow = true;
+      var box = new THREE.Box3().setFromObject( mesh );
       this.scene.add(mesh);
     });
     // Binary files
@@ -112,20 +137,15 @@ console.log('handrail', box.min, box.max, box.size() );
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.renderReverseSided = false;
     this.container.appendChild(this.renderer.domElement);
-    // this.stats
-    // this.stats = new Stats();
-    // this.container.appendChild(this.stats.domElement);
-    //
+    this.stats
+    this.stats = new Stats();
+    this.container.appendChild(this.stats.domElement);
     window.addEventListener('resize', this.handleWindowResize, false);
     this.animate();
   }
 
-  // componentDidMount() {
-  //   // this.animate();
-  // }
-
   componentDidUpdate() {
-    // this.animate();
+    this.animate();
   }
 
   componentWillUnMount() {
@@ -156,7 +176,7 @@ console.log('handrail', box.min, box.max, box.size() );
   animate() {
     requestAnimationFrame(this.animate);
     this.renderStl();
-    // this.stats.update();
+    this.stats.update();
   }
   renderStl() {
     const timer = Date.now() * 0.0005;
