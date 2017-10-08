@@ -23,75 +23,36 @@ export default class Renderer extends React.Component {
     }
     this.camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.01, 5000);
     this.camera.position.set(0, 0, 0);
-    this.cameraTarget = new THREE.Vector3(0, -0.25, 0);
+    this.cameraTarget = new THREE.Vector3(0, -0.05, 0);
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color(0x72645b);
     this.scene.fog = new THREE.Fog(0x72645b, 2, 15);
     // Ground
     const plane = new THREE.Mesh(
       new THREE.PlaneBufferGeometry(40, 40),
-      new THREE.MeshPhongMaterial({color: 0x999999, specular: 0x101010})
+      new THREE.MeshLambertMaterial({color: 'black', specular: 'black'})
     );
     plane.rotation.x = -Math.PI/2;
-    plane.position.y = -0.5;
+    plane.position.y = -1;
     this.scene.add(plane);
     plane.receiveShadow = true;
     // ASCII file
     const loader = new THREE.STLLoader();
-    // loader.load('./slotted_disk.stl', geometry => {
-    //   console.log('disk geom', geometry)
-    //   const material = new THREE.MeshPhongMaterial({color: 0xff5533, specular: 0x111111, shininess: 200});
-    //   const mesh = new THREE.Mesh(geometry, material);
-    //   mesh.position.set(0, 0, 0);
-    //   mesh.rotation.set(0, - Math.PI / 2, 0);
-    //   mesh.scale.set(0.5, 0.5, 0.5);
-    //   mesh.castShadow = false;
-    //   mesh.receiveShadow = false;
-    //   var box = new THREE.Box3().setFromObject( mesh );
-    //   console.log('disk', box.min, box.max, box.size() );
-    //   this.scene.add(mesh);
-    // });
-    loader.load('./models/S0_3538.fixed.stl', geometry => {
+    loader.load('./models/LAB_S0_geometry.stl', geometry => {
       // center it to the bounding box
       geometry.center();
-      const material = new THREE.MeshPhongMaterial({color: 0xff5533, specular: 0x111111, shininess: 200});
+      const material = new THREE.MeshLambertMaterial({color: '#B0C4DE', specular: 'black', shininess: 100});
       const mesh = new THREE.Mesh(geometry, material);
-      mesh.position.set(0, 0, 0);
-      mesh.rotation.set(0, - Math.PI / 2, 0);
+      mesh.position.set(0, -0.01, 0);
+      mesh.rotation.set(90, 0, 30);
       // the models are in inches, scale back to meters
-      mesh.scale.set(0.025, 0.025, 0.025);
-      mesh.castShadow = true;
-      var box = new THREE.Box3().setFromObject( mesh );
-      this.scene.add(mesh);
-    });
-    loader.load('./models/GAP_SPAN_0288_0259.fixed.stl', geometry => {
-      // center it to the bounding box
-      geometry.center();
-      const material = new THREE.MeshPhongMaterial({color: 0xff5533, specular: 0x111111, shininess: 200});
-      const mesh = new THREE.Mesh(geometry, material);
-      mesh.position.set(0, 0, 0);
-      mesh.rotation.set(90, 0, 0);
-      // the models are in inches, scale back to meters
-      mesh.scale.set(0.025, 0.025, 0.025);
-      mesh.castShadow = true;
-      var box = new THREE.Box3().setFromObject( mesh );
-      this.scene.add(mesh);
-    });
-    loader.load('./models/LAB_0208.fixed.stl', geometry => {
-      // center it to the bounding box
-      geometry.center();
-      const material = new THREE.MeshPhongMaterial({color: 0xff5533, specular: 0x111111, shininess: 200});
-      const mesh = new THREE.Mesh(geometry, material);
-      mesh.position.set(0.5, 0, 0);
-      mesh.rotation.set(90, - Math.PI / 2, 0);
-      // the models are in inches, scale back to meters
-      mesh.scale.set(0.025, 0.025, 0.025);
-      mesh.castShadow = true;
+      mesh.scale.set(0.0028, 0.0028, 0.0028);
+      // mesh.castShadow = true;
       var box = new THREE.Box3().setFromObject( mesh );
       this.scene.add(mesh);
     });
     // Binary files
-    // const material = new THREE.MeshPhongMaterial({color: 0xAAAAAA, specular: 0x111111, shininess: 200});
+    // const material = new THREE.MeshLambertMaterial({color: 0xAAAAAA, specular: 0x111111, shininess: 200});
     // loader.load('./models/stl/binary/pr2_head_pan.stl', geometry => {
     //   const mesh = new THREE.Mesh(geometry, material);
     //   mesh.position.set(0, - 0.37, - 0.6);
@@ -114,7 +75,7 @@ export default class Renderer extends React.Component {
     // loader.load('./models/stl/binary/colored.stl', function (geometry) {
     //   let meshMaterial = material;
     //   if (geometry.hasColors) {
-    //     meshMaterial = new THREE.MeshPhongMaterial({opacity: geometry.alpha, vertexColors: THREE.VertexColors});
+    //     meshMaterial = new THREE.MeshLambertMaterial({opacity: geometry.alpha, vertexColors: THREE.VertexColors});
     //  }
     //   const mesh = new THREE.Mesh(geometry, meshMaterial);
     //   mesh.position.set(0.5, 0.2, 0);
