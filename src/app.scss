@@ -1,5 +1,12 @@
 body {
   background: silver;
+  overflow-x: hidden;
+  margin: 0;
+}
+
+main {
+  width: 100vw;
+  max-width: 100vw;
 }
 
 #stats {

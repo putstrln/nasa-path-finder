@@ -1,9 +1,10 @@
 import React from 'react';
-// import THREE from 'three';
 import 'utils/stlLoader';
 import Detector from 'utils/detector';
 import Stats from 'stats-js';
+import OrbitControlsFactory from 'three-orbit-controls';
 
+const OrbitControls = OrbitControlsFactory(THREE);
 export default class Renderer extends React.Component {
   constructor() {
     super();
@@ -22,11 +23,14 @@ export default class Renderer extends React.Component {
       Detector.addGetWebGLMessage();
     }
     this.camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.01, 5000);
-    this.camera.position.set(0, 0, 0);
-    this.cameraTarget = new THREE.Vector3(0, -0.05, 0);
+    this.camera.position.set(0, 0, 2);
+    this.cameraTarget = new THREE.Vector3(0, 0, 0);
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color(0x72645b);
-    this.scene.fog = new THREE.Fog(0x72645b, 2, 15);
+    this.scene.background = new THREE.Color('black');
+    this.scene.fog = new THREE.Fog('black', 2, 15);
+
+    // mouse controls to rotate/zoom the model
+    new OrbitControls(this.camera);
     // Ground
     const plane = new THREE.Mesh(
       new THREE.PlaneBufferGeometry(40, 40),
@@ -43,10 +47,10 @@ export default class Renderer extends React.Component {
       geometry.center();
       const material = new THREE.MeshLambertMaterial({color: '#B0C4DE', specular: 'black', shininess: 100});
       const mesh = new THREE.Mesh(geometry, material);
-      mesh.position.set(0, -0.01, 0);
+      mesh.position.set(0, 0, 0);
       mesh.rotation.set(90, 0, 30);
       // the models are in inches, scale back to meters
-      mesh.scale.set(0.0028, 0.0028, 0.0028);
+      mesh.scale.set(0.0018, 0.0018, 0.0018);
       // mesh.castShadow = true;
       var box = new THREE.Box3().setFromObject( mesh );
       this.scene.add(mesh);
@@ -140,14 +144,11 @@ export default class Renderer extends React.Component {
     this.stats.update();
   }
   renderStl() {
-    const timer = Date.now() * 0.0005;
-    this.camera.position.x = Math.cos(timer) * 3;
-    this.camera.position.z = Math.sin(timer) * 3;
     this.camera.lookAt(this.cameraTarget);
     this.renderer.render(this.scene, this.camera);
   }
 
   render() {
-    return <div ref={c => this.container = c}>Renderer</div>;
+    return <div ref={c => this.container = c}></div>;
   }
 }
