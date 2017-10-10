@@ -1,0 +1,72 @@
+import React from 'react';
+import Dropzone from 'react-dropzone';
+
+export default class Controls extends React.Component {
+  constructor() {
+    super();
+    this.state = {
+      file: null,
+      error: '',
+      loading: false,
+    };
+    this.handleFileDrop = this.handleFileDrop.bind(this);
+    this.handleFileRejected = this.handleFileRejected.bind(this);
+  }
+
+  handleFileDrop(acceptedFiles) {
+    const {
+      onFileLoad
+    } = this.props;
+    this.setState({
+      file: acceptedFiles[0],
+    });
+    acceptedFiles.forEach(file => {
+      this.setState({error: ''});
+      const reader = new FileReader();
+      reader.onload = () => {
+        onFileLoad(reader.result);
+      };
+      reader.onabort = () => console.log('file reading was aborted');
+      reader.onerror = () => console.log('file reading has failed');
+      reader.onloadstart = () => this.setState({loading: true});
+      reader.onloadend = () => this.setState({loading: false});
+
+      reader.readAsBinaryString(file);
+    });
+  }
+
+  handleFileRejected() {
+    this.setState({error: 'Can only accept stl files'});
+  }
+
+  render() {
+    const {
+      file,
+      error,
+      loading
+    } = this.state;
+    return (
+      <div className='Controls' style={{padding: '1em'}}>
+        Controls
+        <div>Drag & drop any stl files to render...</div>
+        {loading && <div>Loading..</div>}
+        <Dropzone
+          onDrop={this.handleFileDrop}
+          multiple={false}
+          onDropRejected={this.handleFileRejected}
+          style={{
+            width: '100px',
+            height: '100px',
+            border: '1px dotted black'
+          }}
+          accept='.stl'
+        >
+          <div style={{color: 'red'}}>{error}</div>
+          {file &&
+            <div>{file.name} - {file.size} bytes</div>
+          }
+        </Dropzone>
+      </div>
+    );
+  }
+}

@@ -6,7 +6,6 @@ export default class App extends React.Component {
   render() {
     return (
       <div>
-        NASA path finder
         <Container />
       </div>
     )

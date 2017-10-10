@@ -14,8 +14,10 @@ export default class Renderer extends React.Component {
     this.cameraTarget = null;
     this.scene = null;
     this.renderer = null;
+    this.model = null;
     this.handleWindowResize = this.handleWindowResize.bind(this);
     this.animate = this.animate.bind(this);
+    this.renderStlFile = this.renderStlFile.bind(this);
   }
 
   componentDidMount() {
@@ -41,20 +43,20 @@ export default class Renderer extends React.Component {
     this.scene.add(plane);
     plane.receiveShadow = true;
     // ASCII file
-    const loader = new THREE.STLLoader();
-    loader.load('./models/LAB_S0_geometry.stl', geometry => {
-      // center it to the bounding box
-      geometry.center();
-      const material = new THREE.MeshLambertMaterial({color: '#B0C4DE', specular: 'black', shininess: 100});
-      const mesh = new THREE.Mesh(geometry, material);
-      mesh.position.set(0, 0, 0);
-      mesh.rotation.set(90, 0, 30);
-      // the models are in inches, scale back to meters
-      mesh.scale.set(0.0018, 0.0018, 0.0018);
-      // mesh.castShadow = true;
-      var box = new THREE.Box3().setFromObject( mesh );
-      this.scene.add(mesh);
-    });
+    // const loader = new THREE.STLLoader();
+    // loader.load('./models/LAB_S0_geometry.stl', geometry => {
+    //   // center it to the bounding box
+    //   geometry.center();
+    //   const material = new THREE.MeshLambertMaterial({color: '#B0C4DE', specular: 'black', shininess: 100});
+    //   const mesh = new THREE.Mesh(geometry, material);
+    //   mesh.position.set(0, 0, 0);
+    //   mesh.rotation.set(90, 0, 30);
+    //   // the models are in inches, scale back to meters
+    //   mesh.scale.set(0.0018, 0.0018, 0.0018);
+    //   // mesh.castShadow = true;
+    //   var box = new THREE.Box3().setFromObject( mesh );
+    //   this.scene.add(mesh);
+    // });
     // Binary files
     // const material = new THREE.MeshLambertMaterial({color: 0xAAAAAA, specular: 0x111111, shininess: 200});
     // loader.load('./models/stl/binary/pr2_head_pan.stl', geometry => {
@@ -102,19 +104,47 @@ export default class Renderer extends React.Component {
     this.renderer.shadowMap.enabled = true;
     this.renderer.shadowMap.renderReverseSided = false;
     this.container.appendChild(this.renderer.domElement);
-    this.stats
     this.stats = new Stats();
     this.container.appendChild(this.stats.domElement);
     window.addEventListener('resize', this.handleWindowResize, false);
-    this.animate();
   }
 
   componentDidUpdate() {
-    this.animate();
+    this.renderStlFile();
   }
 
   componentWillUnMount() {
     window.addEventListener('resize', this.handleWindowResize, false);
+  }
+
+  renderStlFile() {
+    const {
+      file
+    } = this.props;
+    if (!file) {
+      return;
+    }
+    if (this.model) {
+      this.scene.remove(this.model);
+      this.model.geometry.dispose();
+      this.model.material.dispose();
+      this.model = undefined;
+    }
+    const loader = new THREE.STLLoader();
+    const geometry = loader.parse(file);
+    // center it to the bounding box
+    geometry.center();
+    const material = new THREE.MeshLambertMaterial({color: '#B0C4DE'});
+    const mesh = new THREE.Mesh(geometry, material);
+    mesh.position.set(0, 0, 0);
+    mesh.rotation.set(90, 0, 30);
+    // the models are in inches, scale back to meters
+    // TODO: maybe guess units and scale automatically
+    mesh.scale.set(0.0018, 0.0018, 0.0018);
+    var box = new THREE.Box3().setFromObject( mesh );
+    this.model = mesh;
+    this.scene.add(mesh);
+    this.animate();
   }
 
   addShadowedLight(x, y, z, color, intensity) {
