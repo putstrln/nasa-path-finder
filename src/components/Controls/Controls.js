@@ -16,7 +16,7 @@ export default class Controls extends React.Component {
 
   componentDidMount() {
     const {onFileLoad} = this.props;
-    const fileName = '/models/LAB_S0_geometry.stl';
+    const fileName = './models/LAB_S0_geometry.stl';
     // load a default file for demo purposes
     this.setState({
       file: {
