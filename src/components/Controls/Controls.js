@@ -1,5 +1,6 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
+import fetch from 'isomorphic-fetch';
 
 export default class Controls extends React.Component {
   constructor() {
@@ -11,6 +12,25 @@ export default class Controls extends React.Component {
     };
     this.handleFileDrop = this.handleFileDrop.bind(this);
     this.handleFileRejected = this.handleFileRejected.bind(this);
+  }
+
+  componentDidMount() {
+    const {onFileLoad} = this.props;
+    const fileName = '/models/LAB_S0_geometry.stl';
+    // load a default file for demo purposes
+    this.setState({
+      file: {
+        name: fileName,
+        size: 35000000
+      },
+      loading: true
+    });
+    fetch(fileName)
+      .then(response => response.arrayBuffer())
+      .then(data => {
+        onFileLoad(data);
+        this.setState({loading: false});
+      });
   }
 
   handleFileDrop(acceptedFiles) {
@@ -49,7 +69,7 @@ export default class Controls extends React.Component {
       <div className='Controls' style={{padding: '1em'}}>
         Controls
         <div>Drag & drop any stl files to render...</div>
-        {loading && <div>Loading..</div>}
+        {loading && <div style={{color: 'blue'}}>Loading..</div>}
         <Dropzone
           onDrop={this.handleFileDrop}
           multiple={false}
