@@ -6,86 +6,146 @@ export default class Controls extends React.Component {
   constructor() {
     super();
     this.state = {
-      file: null,
-      error: '',
-      loading: false,
+      stationFile: null,
+      stationError: '',
+      stationLoading: false,
+      handrailFiles: [],
+      handrailError: '',
+      handrailLoading: false,
     };
-    this.handleFileDrop = this.handleFileDrop.bind(this);
-    this.handleFileRejected = this.handleFileRejected.bind(this);
+    this.handleStationFileDrop = this.handleStationFileDrop.bind(this);
+    this.handleStationFileRejected = this.handleStationFileRejected.bind(this);
+    this.handleHandrailFilesDrop = this.handleHandrailFilesDrop.bind(this);
   }
 
   componentDidMount() {
-    const {onFileLoad} = this.props;
+    const {onStationFileLoad} = this.props;
     const fileName = './models/LAB_S0_geometry.stl';
-    // load a default file for demo purposes
+    // load a default stationFile for demo purposes
     this.setState({
-      file: {
+      stationFile: {
         name: fileName,
         size: 35000000
       },
-      loading: true
+      stationLoading: true
     });
     fetch(fileName)
       .then(response => response.arrayBuffer())
       .then(data => {
-        onFileLoad(data);
-        this.setState({loading: false});
+        onStationFileLoad(data);
+        this.setState({stationLoading: false});
       });
   }
 
-  handleFileDrop(acceptedFiles) {
+  handleStationFileDrop(acceptedFiles) {
     const {
-      onFileLoad
+      onStationFileLoad
     } = this.props;
-    this.setState({
-      file: acceptedFiles[0],
-    });
-    acceptedFiles.forEach(file => {
-      this.setState({error: ''});
+    acceptedFiles.forEach(stationFile => {
+      this.setState({stationError: ''});
       const reader = new FileReader();
-      reader.onload = () => {
-        onFileLoad(reader.result);
+      reader.onabort = () => console.log('stationFile reading was aborted');
+      reader.onerror = () => console.log('stationFile reading has failed');
+      reader.onloadstart = () => this.setState({stationLoading: true});
+      reader.onloadend = () => {
+        onStationFileLoad(reader.result);
+        this.setState({
+          stationFile,
+          stationLoading: false
+        });
       };
-      reader.onabort = () => console.log('file reading was aborted');
-      reader.onerror = () => console.log('file reading has failed');
-      reader.onloadstart = () => this.setState({loading: true});
-      reader.onloadend = () => this.setState({loading: false});
 
-      reader.readAsBinaryString(file);
+      reader.readAsBinaryString(stationFile);
     });
   }
 
-  handleFileRejected() {
-    this.setState({error: 'Can only accept stl files'});
+  handleStationFileRejected() {
+    this.setState({stationError: 'Can only accept stl files'});
+  }
+
+  handleHandrailFilesDrop(files) {
+    const {onHandrailFilesLoad} = this.props;
+    const handrailFiles = [];
+    const handrailResults = [];
+    files.forEach((handrailFile, i) => {
+      this.setState({handrailError: ''});
+      const reader = new FileReader();
+      reader.onabort = () => console.log('handrailFile reading was aborted');
+      reader.onerror = () => console.log('handrailFile reading has failed');
+      reader.onloadstart = () => {
+        if (i === 0) {
+          this.setState({handrailLoading: true});
+        }
+      };
+      reader.onloadend = () => {
+        handrailFiles.push(handrailFile);
+        handrailResults.push(reader.result);
+        if (i === files.length - 1) {
+          this.setState({
+            handrailFiles,
+            handrailLoading: false
+          });
+          onHandrailFilesLoad(handrailResults);
+        }
+      };
+
+      reader.readAsBinaryString(handrailFile);
+    });
   }
 
   render() {
     const {
-      file,
-      error,
-      loading
+      stationFile,
+      stationError,
+      stationLoading,
+      handrailFiles,
+      handrailError,
+      handrailLoading,
     } = this.state;
     return (
       <div className='Controls' style={{padding: '1em'}}>
-        Controls
-        <div>Drag & drop any stl files to render...</div>
-        {loading && <div style={{color: 'blue'}}>Loading..</div>}
-        <Dropzone
-          onDrop={this.handleFileDrop}
-          multiple={false}
-          onDropRejected={this.handleFileRejected}
-          style={{
-            width: '100px',
-            height: '100px',
-            border: '1px dotted black'
-          }}
-          accept='.stl'
-        >
-          <div style={{color: 'red'}}>{error}</div>
-          {file &&
-            <div>{file.name} - {file.size} bytes</div>
-          }
-        </Dropzone>
+        <div>Controls</div>
+        <div style={{display: 'flex', justifyContent: 'space-around'}}>
+          <div className='station-controls'>
+            <div>Drag & drop the station stl file to render...</div>
+            {stationLoading && <div style={{color: 'blue'}}>stationLoading..</div>}
+            <Dropzone
+              onDrop={this.handleStationFileDrop}
+              multiple={false}
+              onDropRejected={this.handleStationFileRejected}
+              style={{
+                width: '100px',
+                height: '100px',
+                border: '1px dotted black'
+              }}
+              accept='.stl'
+            >
+              <div style={{color: 'red'}}>{stationError}</div>
+              {stationFile &&
+                <div>{stationFile.name} - {stationFile.size} bytes</div>
+              }
+            </Dropzone>
+          </div>
+          <div className='handrails-controls'>
+            <div>Drag & drop the handrail stl files to render...</div>
+            {handrailLoading && <div style={{color: 'blue'}}>handrail loading..</div>}
+            <Dropzone
+              onDrop={this.handleHandrailFilesDrop}
+              onDropRejected={this.handleHandrailFilesRejected}
+              style={{
+                width: '100px',
+                height: '100px',
+                border: '1px dotted black'
+              }}
+              accept='.stl'
+            >
+              <div style={{color: 'red'}}>{handrailError}</div>
+              {handrailFiles.length > 0 &&
+                <div>{handrailFiles.length} handrails loaded</div>
+              }
+            </Dropzone>
+          </div>
+        </div>
       </div>
     );
   }

@@ -6,23 +6,36 @@ export default class Container extends React.Component {
   constructor() {
     super();
     this.state = {
-      file: null
+      stationFile: null,
+      handrailFiles: null,
     };
-    this.handleFileLoad = this.handleFileLoad.bind(this);
+    this.handleStationFileLoad = this.handleStationFileLoad.bind(this);
+    this.handleHandrailFilesLoad = this.handleHandrailFilesLoad.bind(this);
   }
 
-  handleFileLoad(file) {
-    this.setState({file});
+  handleStationFileLoad(stationFile) {
+    this.setState({stationFile});
+  }
+
+  handleHandrailFilesLoad(handrailFiles) {
+    this.setState({handrailFiles});
   }
 
   render() {
     const {
-      file
+      stationFile,
+      handrailFiles,
     } = this.state;
     return (
       <div>
-        <Controls onFileLoad={this.handleFileLoad} />
-        <Renderer file={file} />
+        <Controls
+          onStationFileLoad={this.handleStationFileLoad}
+          onHandrailFilesLoad={this.handleHandrailFilesLoad}
+        />
+        <Renderer
+          stationFile={stationFile}
+          handrailFiles={handrailFiles}
+        />
       </div>
     );
   }

@@ -1,5 +1,8 @@
 import React from 'react';
 import 'utils/stlLoader';
+import {
+  loadMeshFromFile
+} from 'utils/nodeProcessor/nodeProcessor';
 import Detector from 'utils/detector';
 import Stats from 'stats-js';
 import OrbitControlsFactory from 'three-orbit-controls';
@@ -14,10 +17,11 @@ export default class Renderer extends React.Component {
     this.cameraTarget = null;
     this.scene = null;
     this.renderer = null;
-    this.model = null;
+    this.stationModel = null;
+    this.handrailModels = [];
     this.handleWindowResize = this.handleWindowResize.bind(this);
     this.animate = this.animate.bind(this);
-    this.renderStlFile = this.renderStlFile.bind(this);
+    this.processFiles = this.processFiles.bind(this);
   }
 
   componentDidMount() {
@@ -42,55 +46,6 @@ export default class Renderer extends React.Component {
     plane.position.y = -1;
     this.scene.add(plane);
     plane.receiveShadow = true;
-    // ASCII file
-    // const loader = new THREE.STLLoader();
-    // loader.load('./models/LAB_S0_geometry.stl', geometry => {
-    //   // center it to the bounding box
-    //   geometry.center();
-    //   const material = new THREE.MeshLambertMaterial({color: '#B0C4DE', specular: 'black', shininess: 100});
-    //   const mesh = new THREE.Mesh(geometry, material);
-    //   mesh.position.set(0, 0, 0);
-    //   mesh.rotation.set(90, 0, 30);
-    //   // the models are in inches, scale back to meters
-    //   mesh.scale.set(0.0018, 0.0018, 0.0018);
-    //   // mesh.castShadow = true;
-    //   var box = new THREE.Box3().setFromObject( mesh );
-    //   this.scene.add(mesh);
-    // });
-    // Binary files
-    // const material = new THREE.MeshLambertMaterial({color: 0xAAAAAA, specular: 0x111111, shininess: 200});
-    // loader.load('./models/stl/binary/pr2_head_pan.stl', geometry => {
-    //   const mesh = new THREE.Mesh(geometry, material);
-    //   mesh.position.set(0, - 0.37, - 0.6);
-    //   mesh.rotation.set(- Math.PI / 2, 0, 0);
-    //   mesh.scale.set(2, 2, 2);
-    //   mesh.castShadow = true;
-    //   mesh.receiveShadow = true;
-    //   this.scene.add(mesh);
-    // });
-    // loader.load('./models/stl/binary/pr2_head_tilt.stl', geometry => {
-    //   const mesh = new THREE.Mesh(geometry, material);
-    //   mesh.position.set(0.136, - 0.37, - 0.6);
-    //   mesh.rotation.set(- Math.PI / 2, 0.3, 0);
-    //   mesh.scale.set(2, 2, 2);
-    //   mesh.castShadow = true;
-    //   mesh.receiveShadow = true;
-    //   this.scene.add(mesh);
-    // });
-    // // Colored binary STL
-    // loader.load('./models/stl/binary/colored.stl', function (geometry) {
-    //   let meshMaterial = material;
-    //   if (geometry.hasColors) {
-    //     meshMaterial = new THREE.MeshLambertMaterial({opacity: geometry.alpha, vertexColors: THREE.VertexColors});
-    //  }
-    //   const mesh = new THREE.Mesh(geometry, meshMaterial);
-    //   mesh.position.set(0.5, 0.2, 0);
-    //   mesh.rotation.set(- Math.PI / 2, Math.PI / 2, 0);
-    //   mesh.scale.set(0.3, 0.3, 0.3);
-    //   mesh.castShadow = true;
-    //   mesh.receiveShadow = true;
-    //   this.scene.add(mesh);
-    // });
     // Lights
     this.scene.add(new THREE.HemisphereLight(0x443333, 0x111122));
     this.addShadowedLight(1, 1, 1, 0xffffff, 1.35);
@@ -110,40 +65,46 @@ export default class Renderer extends React.Component {
   }
 
   componentDidUpdate() {
-    this.renderStlFile();
+    this.processFiles();
   }
 
   componentWillUnMount() {
     window.addEventListener('resize', this.handleWindowResize, false);
   }
 
-  renderStlFile() {
+  processFiles() {
     const {
-      file
+      stationFile,
+      handrailFiles,
     } = this.props;
-    if (!file) {
+    if (!stationFile) {
       return;
     }
-    if (this.model) {
-      this.scene.remove(this.model);
-      this.model.geometry.dispose();
-      this.model.material.dispose();
-      this.model = undefined;
+    if (this.stationModel) {
+      this.scene.remove(this.stationModel);
+      this.stationModel.geometry.dispose();
+      this.stationModel.material.dispose();
+      this.stationModel = undefined;
     }
-    const loader = new THREE.STLLoader();
-    const geometry = loader.parse(file);
-    // center it to the bounding box
-    geometry.center();
-    const material = new THREE.MeshLambertMaterial({color: '#B0C4DE'});
-    const mesh = new THREE.Mesh(geometry, material);
-    mesh.position.set(0, 0, 0);
-    mesh.rotation.set(90, 0, 30);
-    // the models are in inches, scale back to meters
-    // TODO: maybe guess units and scale automatically
-    mesh.scale.set(0.0018, 0.0018, 0.0018);
-    var box = new THREE.Box3().setFromObject( mesh );
-    this.model = mesh;
+    const mesh = loadMeshFromFile(stationFile);
+    this.stationModel = mesh;
     this.scene.add(mesh);
+
+    if (this.handrailModels.length > 0) {
+      this.handrailModels.forEach(model => {
+        this.scene.remove(model);
+        model.geometry.dispose();
+        model.material.dispose();
+        model = undefined;
+      })
+    }
+    if (handrailFiles && handrailFiles.length > 0) {
+      handrailFiles.forEach(handrailFile => {
+        const handrailMesh = loadMeshFromFile(handrailFile);
+        this.handrailModels.push(handrailMesh);
+        this.scene.add(handrailMesh);
+      });
+    }
     this.animate();
   }
 
