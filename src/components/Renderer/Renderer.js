@@ -100,7 +100,7 @@ export default class Renderer extends React.Component {
     }
     if (handrailFiles && handrailFiles.length > 0) {
       handrailFiles.forEach(handrailFile => {
-        const handrailMesh = loadMeshFromFile(handrailFile);
+        const handrailMesh = loadMeshFromFile(handrailFile, {color: 'red'});
         this.handrailModels.push(handrailMesh);
         this.scene.add(handrailMesh);
       });

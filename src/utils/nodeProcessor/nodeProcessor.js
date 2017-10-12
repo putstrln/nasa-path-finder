@@ -6,12 +6,19 @@
 
 import 'utils/stlLoader';
 
-const loadMeshFromFile = file => {
+const defaultMaterialOptions = {
+  color: '#B0C4DE'
+};
+
+const loadMeshFromFile = (file, materialOptions = {}) => {
   const loader = new THREE.STLLoader();
   const geometry = loader.parse(file);
   // center it to the bounding box
   geometry.center();
-  const material = new THREE.MeshLambertMaterial({color: '#B0C4DE'});
+  const material = new THREE.MeshLambertMaterial({
+    ...defaultMaterialOptions,
+    ...materialOptions
+  });
   const mesh = new THREE.Mesh(geometry, material);
   mesh.position.set(0, 0, 0);
   mesh.rotation.set(90, 0, 30);
