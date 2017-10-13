@@ -7,10 +7,12 @@ export default class Container extends React.Component {
     super();
     this.state = {
       stationFile: null,
-      handrailFiles: null,
+      handrailFiles: [],
+      strFiles: [],
     };
     this.handleStationFileLoad = this.handleStationFileLoad.bind(this);
     this.handleHandrailFilesLoad = this.handleHandrailFilesLoad.bind(this);
+    this.handleStrFilesLoad = this.handleStrFilesLoad.bind(this);
   }
 
   handleStationFileLoad(stationFile) {
@@ -21,20 +23,27 @@ export default class Container extends React.Component {
     this.setState({handrailFiles});
   }
 
+  handleStrFilesLoad(strFiles) {
+    this.setState({strFiles});
+  }
+
   render() {
     const {
       stationFile,
       handrailFiles,
+      strFiles,
     } = this.state;
     return (
       <div>
         <Controls
           onStationFileLoad={this.handleStationFileLoad}
           onHandrailFilesLoad={this.handleHandrailFilesLoad}
+          onStrFilesLoad={this.handleStrFilesLoad}
         />
         <Renderer
           stationFile={stationFile}
           handrailFiles={handrailFiles}
+          strFiles={strFiles}
         />
       </div>
     );

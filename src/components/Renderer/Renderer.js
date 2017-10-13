@@ -1,7 +1,8 @@
 import React from 'react';
 import 'utils/stlLoader';
 import {
-  loadMeshFromFile
+  loadMeshFromFile,
+  positionModelsBasedOnStrFile
 } from 'utils/nodeProcessor/nodeProcessor';
 import Detector from 'utils/detector';
 import Stats from 'stats-js';
@@ -18,38 +19,35 @@ export default class Renderer extends React.Component {
     this.scene = null;
     this.renderer = null;
     this.stationModel = null;
-    this.handrailModels = [];
+    this.stationModelIsDirty = true;
+    this.handrailModels = {};
     this.handleWindowResize = this.handleWindowResize.bind(this);
     this.animate = this.animate.bind(this);
     this.processFiles = this.processFiles.bind(this);
+  }
+
+  componentWillReceiveProps(newProps) {
+    if (this.props.stationFile !== newProps.stationFile) {
+      this.stationModelIsDirty = true;
+    }
   }
 
   componentDidMount() {
     if (!Detector.webgl) {
       Detector.addGetWebGLMessage();
     }
-    this.camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.01, 5000);
-    this.camera.position.set(0, 0, 2);
+    this.camera = new THREE.PerspectiveCamera(35, window.innerWidth / window.innerHeight, 0.0001, 5000);
+    this.camera.position.set(0, 0, 3);
     this.cameraTarget = new THREE.Vector3(0, 0, 0);
     this.scene = new THREE.Scene();
     this.scene.background = new THREE.Color('black');
-    this.scene.fog = new THREE.Fog('black', 2, 15);
 
     // mouse controls to rotate/zoom the model
     new OrbitControls(this.camera);
-    // Ground
-    const plane = new THREE.Mesh(
-      new THREE.PlaneBufferGeometry(40, 40),
-      new THREE.MeshLambertMaterial({color: 'black', specular: 'black'})
-    );
-    plane.rotation.x = -Math.PI/2;
-    plane.position.y = -1;
-    this.scene.add(plane);
-    plane.receiveShadow = true;
     // Lights
-    this.scene.add(new THREE.HemisphereLight(0x443333, 0x111122));
+    this.scene.add(new THREE.HemisphereLight('grey', 'grey'));
     this.addShadowedLight(1, 1, 1, 0xffffff, 1.35);
-    this.addShadowedLight(0.5, 1, -1, 0xffaa00, 1);
+    this.addShadowedLight(0.5, 1, -1, 0xffffff, 1);
     // this.renderer
     this.renderer = new THREE.WebGLRenderer({antialias: true});
     this.renderer.setPixelRatio(window.devicePixelRatio);
@@ -76,34 +74,32 @@ export default class Renderer extends React.Component {
     const {
       stationFile,
       handrailFiles,
+      strFiles,
     } = this.props;
     if (!stationFile) {
       return;
     }
-    if (this.stationModel) {
-      this.scene.remove(this.stationModel);
-      this.stationModel.geometry.dispose();
-      this.stationModel.material.dispose();
-      this.stationModel = undefined;
+    if (this.stationModelIsDirty) {
+      if (this.stationModel) {
+        this.scene.remove(this.stationModel);
+        this.stationModel.geometry.dispose();
+        this.stationModel.material.dispose();
+        this.stationModel = undefined;
+      }
+      const mesh = loadMeshFromFile(stationFile);
+      this.stationModel = mesh;
+      this.scene.add(mesh);
+      this.camera.lookAt(mesh);
+      this.stationModelIsDirty = false;
     }
-    const mesh = loadMeshFromFile(stationFile);
-    this.stationModel = mesh;
-    this.scene.add(mesh);
 
-    if (this.handrailModels.length > 0) {
-      this.handrailModels.forEach(model => {
-        this.scene.remove(model);
-        model.geometry.dispose();
-        model.material.dispose();
-        model = undefined;
-      })
-    }
-    if (handrailFiles && handrailFiles.length > 0) {
-      handrailFiles.forEach(handrailFile => {
+    if (handrailFiles && Object.keys(handrailFiles).length > 0) {
+      Object.entries(handrailFiles).forEach(([name, handrailFile]) => {
         const handrailMesh = loadMeshFromFile(handrailFile, {color: 'red'});
-        this.handrailModels.push(handrailMesh);
+        this.handrailModels[name] = handrailMesh;
         this.scene.add(handrailMesh);
       });
+      strFiles.forEach(strFile => positionModelsBasedOnStrFile(this.handrailModels, strFile));
     }
     this.animate();
   }
@@ -131,12 +127,9 @@ export default class Renderer extends React.Component {
   }
   animate() {
     requestAnimationFrame(this.animate);
-    this.renderStl();
-    this.stats.update();
-  }
-  renderStl() {
     this.camera.lookAt(this.cameraTarget);
     this.renderer.render(this.scene, this.camera);
+    this.stats.update();
   }
 
   render() {

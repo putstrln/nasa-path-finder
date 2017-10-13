@@ -6,6 +6,9 @@
 
 import 'utils/stlLoader';
 
+const MMETER_PER_INCH = 0.00254;
+const PITCH_YAW_ROLL_ORDER = 'YZX';
+
 const defaultMaterialOptions = {
   color: '#B0C4DE'
 };
@@ -20,11 +23,9 @@ const loadMeshFromFile = (file, materialOptions = {}) => {
     ...materialOptions
   });
   const mesh = new THREE.Mesh(geometry, material);
-  mesh.position.set(0, 0, 0);
-  mesh.rotation.set(90, 0, 30);
   // the models are in inches, scale back to meters
   // TODO: maybe guess units and scale automatically
-  mesh.scale.set(0.0018, 0.0018, 0.0018);
+  mesh.scale.set(MMETER_PER_INCH, MMETER_PER_INCH, MMETER_PER_INCH);
   return mesh;
   // // Colored binary STL
   // loader.load('./models/stl/binary/colored.stl', function (geometry) {
@@ -42,6 +43,30 @@ const loadMeshFromFile = (file, materialOptions = {}) => {
   // });
 }
 
+const positionModelsBasedOnStrFile = (modelsMap, file) => {
+  const allLines = file.split(/\r\n|\n/);
+  allLines.splice(allLines.length - 1, 1); // last line is empty
+  /*
+    example format
+    ------------------
+    HWY_XXX
+    HWY_XXX.stl
+    221.42 0.00 190.95
+    180.00 0.00 180.00
+    SSREF
+  */
+  for (let i = 0; i < allLines.length; i += 5) {
+    const modelId = allLines[i];
+    const model = modelsMap[modelId + '.stl'];
+    if (model) {
+      const [x, y, z] = allLines[i + 2].split(' ').map(pos => parseInt(pos) * MMETER_PER_INCH);
+      // adjust model position to fit the main model, this is probably from rounding
+      model.position.set(x - 0.15, y - 0.05, z - 0.25)
+    }
+  }
+};
+
 export {
-  loadMeshFromFile
+  loadMeshFromFile,
+  positionModelsBasedOnStrFile
 }

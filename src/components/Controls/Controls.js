@@ -12,10 +12,12 @@ export default class Controls extends React.Component {
       handrailFiles: [],
       handrailError: '',
       handrailLoading: false,
+      strFiles: [],
     };
     this.handleStationFileDrop = this.handleStationFileDrop.bind(this);
     this.handleStationFileRejected = this.handleStationFileRejected.bind(this);
     this.handleHandrailFilesDrop = this.handleHandrailFilesDrop.bind(this);
+    this.handleStrFilesDrop = this.handleStrFilesDrop.bind(this);
   }
 
   componentDidMount() {
@@ -65,27 +67,49 @@ export default class Controls extends React.Component {
 
   handleHandrailFilesDrop(files) {
     const {onHandrailFilesLoad} = this.props;
-    const handrailFiles = [];
-    const handrailResults = [];
+    const {handrailLoading, handrailFiles} = this.state;
+    const handrailResults = {};
     files.forEach((handrailFile, i) => {
       this.setState({handrailError: ''});
       const reader = new FileReader();
       reader.onabort = () => console.log('handrailFile reading was aborted');
       reader.onerror = () => console.log('handrailFile reading has failed');
       reader.onloadstart = () => {
-        if (i === 0) {
+        if (!handrailLoading) {
           this.setState({handrailLoading: true});
         }
       };
       reader.onloadend = () => {
         handrailFiles.push(handrailFile);
-        handrailResults.push(reader.result);
+        handrailResults[handrailFile.name] = reader.result;
         if (i === files.length - 1) {
           this.setState({
             handrailFiles,
             handrailLoading: false
           });
           onHandrailFilesLoad(handrailResults);
+        }
+      };
+
+      reader.readAsBinaryString(handrailFile);
+    });
+  }
+
+  handleStrFilesDrop(files) {
+    const {onStrFilesLoad} = this.props;
+    const {strFiles} = this.state;
+    const strResults = [];
+    files.forEach((handrailFile, i) => {
+      const reader = new FileReader();
+      reader.onabort = () => console.log('handrailFile reading was aborted');
+      reader.onerror = () => console.log('handrailFile reading has failed');
+      reader.onloadend = () => {
+        strResults.push(reader.result);
+        if (i === files.length - 1) {
+          this.setState({
+            strFiles: files,
+          });
+          onStrFilesLoad(strResults);
         }
       };
 
@@ -101,6 +125,7 @@ export default class Controls extends React.Component {
       handrailFiles,
       handrailError,
       handrailLoading,
+      strFiles,
     } = this.state;
     return (
       <div className='Controls' style={{padding: '1em'}}>
@@ -143,6 +168,22 @@ export default class Controls extends React.Component {
               {handrailFiles.length > 0 &&
                 <div>{handrailFiles.length} handrails loaded</div>
               }
+            </Dropzone>
+          </div>
+          <div className='str-controls'>
+            <div>Drag & drop one or more str files to position the handrails...</div>
+            <Dropzone
+              onDrop={this.handleStrFilesDrop}
+              style={{
+                width: '100px',
+                height: '100px',
+                border: '1px dotted black'
+              }}
+              accept='.str'
+            >
+              {strFiles.map(strFile =>
+                <div key={strFile.name}>{strFile.name}</div>
+              )}
             </Dropzone>
           </div>
         </div>
