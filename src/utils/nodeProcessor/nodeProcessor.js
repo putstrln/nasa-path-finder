@@ -5,6 +5,7 @@
 */
 
 import 'utils/stlLoader';
+import THREEx from 'utils/threex.domevents';
 
 const MMETER_PER_INCH = 0.00254;
 const PITCH_YAW_ROLL_ORDER = 'YZX';
@@ -66,7 +67,32 @@ const positionModelsBasedOnStrFile = (modelsMap, file) => {
   }
 };
 
+const createDomEvents = (camera, renderer) => {
+  return new THREEx.DomEvents(camera, renderer.domElement);
+};
+
+const bindDomEventsToMeshes = (modelsMap, domEvents, events) => {
+  for (const id in modelsMap) {
+    const mesh = modelsMap[id];
+    for (const eventName in events) {
+      domEvents.addEventListener(mesh, eventName, events[eventName], false);
+    }
+  }
+};
+
+const unbindDomEventsFromMeshes = (modelsMap, domEvents, events) => {
+  for (const id in modelsMap) {
+    const mesh = modelsMap[id];
+    for (const eventName in events) {
+      domEvents.removeEventListener(mesh, eventName, events[eventName], false);
+    }
+  }
+};
+
 export {
   loadMeshFromFile,
-  positionModelsBasedOnStrFile
+  positionModelsBasedOnStrFile,
+  createDomEvents,
+  bindDomEventsToMeshes,
+  unbindDomEventsFromMeshes
 }

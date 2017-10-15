@@ -2,7 +2,10 @@ import React from 'react';
 import 'utils/stlLoader';
 import {
   loadMeshFromFile,
-  positionModelsBasedOnStrFile
+  positionModelsBasedOnStrFile,
+  createDomEvents,
+  bindDomEventsToMeshes,
+  unbindDomEventsFromMeshes
 } from 'utils/nodeProcessor/nodeProcessor';
 import Detector from 'utils/detector';
 import Stats from 'stats-js';
@@ -21,6 +24,14 @@ export default class Renderer extends React.Component {
     this.stationModel = null;
     this.stationModelIsDirty = true;
     this.handrailModels = {};
+    this.domEvents = null;
+    this.handleHandrailMouseOver = this.handleHandrailMouseOver.bind(this);
+    this.domEventsMap = {
+      'mouseover': this.handleHandrailMouseOver
+    };
+    this.state = {
+      hoveredHandrail: null
+    };
     this.handleWindowResize = this.handleWindowResize.bind(this);
     this.animate = this.animate.bind(this);
     this.processFiles = this.processFiles.bind(this);
@@ -60,6 +71,8 @@ export default class Renderer extends React.Component {
     this.stats = new Stats();
     this.container.appendChild(this.stats.domElement);
     window.addEventListener('resize', this.handleWindowResize, false);
+    // dom events for meshes
+    this.domEvents = createDomEvents(this.camera, this.renderer);
   }
 
   componentDidUpdate() {
@@ -68,6 +81,11 @@ export default class Renderer extends React.Component {
 
   componentWillUnMount() {
     window.addEventListener('resize', this.handleWindowResize, false);
+    unbindDomEventsFromMeshes(this.handrailModels, this.domEvents, this.domEventsMap);
+  }
+
+  handleHandrailMouseOver(e) {
+    this.setState({hoveredHandrail: e.target});
   }
 
   processFiles() {
@@ -96,10 +114,12 @@ export default class Renderer extends React.Component {
     if (handrailFiles && Object.keys(handrailFiles).length > 0) {
       Object.entries(handrailFiles).forEach(([name, handrailFile]) => {
         const handrailMesh = loadMeshFromFile(handrailFile, {color: 'red'});
+        handrailMesh.name = name;
         this.handrailModels[name] = handrailMesh;
         this.scene.add(handrailMesh);
       });
       strFiles.forEach(strFile => positionModelsBasedOnStrFile(this.handrailModels, strFile));
+      bindDomEventsToMeshes(this.handrailModels, this.domEvents, this.domEventsMap);
     }
     this.animate();
   }
@@ -133,6 +153,21 @@ export default class Renderer extends React.Component {
   }
 
   render() {
-    return <div ref={c => this.container = c}></div>;
+    const {
+      hoveredHandrail
+    } = this.state;
+    return (
+      <div>
+        <div className='info-panel'>
+          {hoveredHandrail &&
+            <div>
+              <div>{hoveredHandrail.name}</div>
+              <div>{Object.values(hoveredHandrail.position).join(', ')}</div>
+            </div>
+          }
+        </div>
+        <div ref={c => this.container = c}></div>
+      </div>
+    );
   }
 }
