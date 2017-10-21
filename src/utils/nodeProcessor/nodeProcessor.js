@@ -28,20 +28,6 @@ const loadMeshFromFile = (file, materialOptions = {}) => {
   // TODO: maybe guess units and scale automatically
   mesh.scale.set(MMETER_PER_INCH, MMETER_PER_INCH, MMETER_PER_INCH);
   return mesh;
-  // // Colored binary STL
-  // loader.load('./models/stl/binary/colored.stl', function (geometry) {
-  //   let meshMaterial = material;
-  //   if (geometry.hasColors) {
-  //     meshMaterial = new THREE.MeshLambertMaterial({opacity: geometry.alpha, vertexColors: THREE.VertexColors});
-  //  }
-  //   const mesh = new THREE.Mesh(geometry, meshMaterial);
-  //   mesh.position.set(0.5, 0.2, 0);
-  //   mesh.rotation.set(- Math.PI / 2, Math.PI / 2, 0);
-  //   mesh.scale.set(0.3, 0.3, 0.3);
-  //   mesh.castShadow = true;
-  //   mesh.receiveShadow = true;
-  //   this.scene.add(mesh);
-  // });
 }
 
 const positionModelsBasedOnStrFile = (modelsMap, file) => {
