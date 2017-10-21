@@ -3,14 +3,14 @@
  * @author mr.doob / http://mrdoob.com/
  */
 
-var Detector = {
+const Detector = {
 
     canvas: !! window.CanvasRenderingContext2D,
-    webgl: ( function () {
+    webgl: ( (() => {
 
         try {
 
-            var canvas = document.createElement( 'canvas' ); return !! ( window.WebGLRenderingContext && ( canvas.getContext( 'webgl' ) || canvas.getContext( 'experimental-webgl' ) ) );
+            const canvas = document.createElement( 'canvas' ); return !! ( window.WebGLRenderingContext && ( canvas.getContext( 'webgl' ) || canvas.getContext( 'experimental-webgl' ) ) );
 
         } catch ( e ) {
 
@@ -18,13 +18,13 @@ var Detector = {
 
         }
 
-    } )(),
+    }) )(),
     workers: !! window.Worker,
     fileapi: window.File && window.FileReader && window.FileList && window.Blob,
 
-    getWebGLErrorMessage: function () {
+    getWebGLErrorMessage() {
 
-        var element = document.createElement( 'div' );
+        const element = document.createElement( 'div' );
         element.id = 'webgl-error-message';
         element.style.fontFamily = 'monospace';
         element.style.fontSize = '13px';
@@ -52,9 +52,10 @@ var Detector = {
 
     },
 
-    addGetWebGLMessage: function ( parameters ) {
-
-        var parent, id, element;
+    addGetWebGLMessage(parameters) {
+        let parent;
+        let id;
+        let element;
 
         parameters = parameters || {};
 
@@ -65,7 +66,6 @@ var Detector = {
         element.id = id;
 
         parent.appendChild( element );
-
     }
 
 };

@@ -40,13 +40,13 @@ THREE.STLLoader.prototype = {
 
     constructor: THREE.STLLoader,
 
-    load: function ( url, onLoad, onProgress, onError ) {
+    load(url, onLoad, onProgress, onError) {
 
-        var scope = this;
+        const scope = this;
 
-        var loader = new THREE.FileLoader( scope.manager );
+        const loader = new THREE.FileLoader( scope.manager );
         loader.setResponseType( 'arraybuffer' );
-        loader.load( url, function ( text ) {
+        loader.load( url, text => {
 
             onLoad( scope.parse( text ) );
 
@@ -54,11 +54,13 @@ THREE.STLLoader.prototype = {
 
     },
 
-    parse: function ( data ) {
+    parse(data) {
 
         function isBinary( data ) {
-
-            var expect, face_size, n_faces, reader;
+            let expect;
+            let face_size;
+            let n_faces;
+            let reader;
             reader = new DataView( data );
             face_size = ( 32 / 8 * 3 ) + ( ( 32 / 8 * 3 ) * 3 ) + ( 16 / 8 );
             n_faces = reader.getUint32( 80, true );
@@ -76,9 +78,9 @@ THREE.STLLoader.prototype = {
 
             // US-ASCII ordinal values for 's', 'o', 'l', 'i', 'd'
 
-            var solid = [ 115, 111, 108, 105, 100 ];
+            const solid = [ 115, 111, 108, 105, 100 ];
 
-            for ( var i = 0; i < 5; i ++ ) {
+            for ( let i = 0; i < 5; i ++ ) {
 
                 // If solid[ i ] does not match the i-th byte, then it is not an
                 // ASCII STL; hence, it is binary and return true.
@@ -90,21 +92,26 @@ THREE.STLLoader.prototype = {
             // First 5 bytes read "solid"; declare it to be an ASCII STL
 
             return false;
-
         }
 
         function parseBinary( data ) {
+            const reader = new DataView( data );
+            const faces = reader.getUint32( 80, true );
 
-            var reader = new DataView( data );
-            var faces = reader.getUint32( 80, true );
-
-            var r, g, b, hasColors = false, colors;
-            var defaultR, defaultG, defaultB, alpha;
+            let r;
+            let g;
+            let b;
+            let hasColors = false;
+            let colors;
+            let defaultR;
+            let defaultG;
+            let defaultB;
+            let alpha;
 
             // process STL header
             // check for default color in header ("COLOR=rgba" sequence).
 
-            for ( var index = 0; index < 80 - 10; index ++ ) {
+            for ( let index = 0; index < 80 - 10; index ++ ) {
 
                 if ( ( reader.getUint32( index, false ) == 0x434F4C4F /*COLO*/ ) &&
                     ( reader.getUint8( index + 4 ) == 0x52 /*'R'*/ ) &&
@@ -122,24 +129,24 @@ THREE.STLLoader.prototype = {
 
             }
 
-            var dataOffset = 84;
-            var faceLength = 12 * 4 + 2;
+            const dataOffset = 84;
+            const faceLength = 12 * 4 + 2;
 
-            var geometry = new THREE.BufferGeometry();
+            const geometry = new THREE.BufferGeometry();
 
-            var vertices = [];
-            var normals = [];
+            const vertices = [];
+            const normals = [];
 
-            for ( var face = 0; face < faces; face ++ ) {
+            for ( let face = 0; face < faces; face ++ ) {
 
-                var start = dataOffset + face * faceLength;
-                var normalX = reader.getFloat32( start, true );
-                var normalY = reader.getFloat32( start + 4, true );
-                var normalZ = reader.getFloat32( start + 8, true );
+                const start = dataOffset + face * faceLength;
+                const normalX = reader.getFloat32( start, true );
+                const normalY = reader.getFloat32( start + 4, true );
+                const normalZ = reader.getFloat32( start + 8, true );
 
                 if ( hasColors ) {
 
-                    var packedColor = reader.getUint16( start + 48, true );
+                    const packedColor = reader.getUint16( start + 48, true );
 
                     if ( ( packedColor & 0x8000 ) === 0 ) {
 
@@ -159,9 +166,9 @@ THREE.STLLoader.prototype = {
 
                 }
 
-                for ( var i = 1; i <= 3; i ++ ) {
+                for ( let i = 1; i <= 3; i ++ ) {
 
-                    var vertexstart = start + i * 12;
+                    const vertexstart = start + i * 12;
 
                     vertices.push( reader.getFloat32( vertexstart, true ) );
                     vertices.push( reader.getFloat32( vertexstart + 4, true ) );
@@ -191,32 +198,31 @@ THREE.STLLoader.prototype = {
             }
 
             return geometry;
-
         }
 
         function parseASCII( data ) {
 
-            var geometry = new THREE.BufferGeometry();
-            var patternFace = /facet([\s\S]*?)endfacet/g;
-            var faceCounter = 0;
+            const geometry = new THREE.BufferGeometry();
+            const patternFace = /facet([\s\S]*?)endfacet/g;
+            let faceCounter = 0;
 
-            var patternFloat = /[\s]+([+-]?(?:\d+.\d+|\d+.|\d+|.\d+)(?:[eE][+-]?\d+)?)/.source;
-            var patternVertex = new RegExp( 'vertex' + patternFloat + patternFloat + patternFloat, 'g' );
-            var patternNormal = new RegExp( 'normal' + patternFloat + patternFloat + patternFloat, 'g' );
+            const patternFloat = /[\s]+([+-]?(?:\d+.\d+|\d+.|\d+|.\d+)(?:[eE][+-]?\d+)?)/.source;
+            const patternVertex = new RegExp( `vertex${patternFloat}${patternFloat}${patternFloat}`, 'g' );
+            const patternNormal = new RegExp( `normal${patternFloat}${patternFloat}${patternFloat}`, 'g' );
 
-            var vertices = [];
-            var normals = [];
+            const vertices = [];
+            const normals = [];
 
-            var normal = new THREE.Vector3();
+            const normal = new THREE.Vector3();
 
-            var result;
+            let result;
 
             while ( ( result = patternFace.exec( data ) ) !== null ) {
 
-                var vertexCountPerFace = 0;
-                var normalCountPerFace = 0;
+                let vertexCountPerFace = 0;
+                let normalCountPerFace = 0;
 
-                var text = result[ 0 ];
+                const text = result[ 0 ];
 
                 while ( ( result = patternNormal.exec( text ) ) !== null ) {
 
@@ -266,7 +272,7 @@ THREE.STLLoader.prototype = {
 
             if ( typeof buffer !== 'string' ) {
 
-                var array_buffer = new Uint8Array( buffer );
+                const array_buffer = new Uint8Array( buffer );
 
                 if ( window.TextDecoder !== undefined ) {
 
@@ -274,9 +280,9 @@ THREE.STLLoader.prototype = {
 
                 }
 
-                var str = '';
+                let str = '';
 
-                for ( var i = 0, il = buffer.byteLength; i < il; i ++ ) {
+                for ( let i = 0, il = buffer.byteLength; i < il; i ++ ) {
 
                     str += String.fromCharCode( array_buffer[ i ] ); // implicitly assumes little-endian
 
@@ -296,8 +302,8 @@ THREE.STLLoader.prototype = {
 
             if ( typeof buffer === 'string' ) {
 
-                var array_buffer = new Uint8Array( buffer.length );
-                for ( var i = 0; i < buffer.length; i ++ ) {
+                const array_buffer = new Uint8Array( buffer.length );
+                for ( let i = 0; i < buffer.length; i ++ ) {
 
                     array_buffer[ i ] = buffer.charCodeAt( i ) & 0xff; // implicitly assumes little-endian
 
@@ -314,7 +320,7 @@ THREE.STLLoader.prototype = {
 
         // start
 
-        var binData = ensureBinary( data );
+        const binData = ensureBinary( data );
 
         return isBinary( binData ) ? parseBinary( binData ) : parseASCII( ensureString( data ) );
 
