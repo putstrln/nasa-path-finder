@@ -1,6 +1,7 @@
 import React from 'react';
 import Dropzone from 'react-dropzone';
 import fetch from 'isomorphic-fetch';
+import PropTypes from 'prop-types';
 
 export default class Controls extends React.Component {
   constructor() {
@@ -46,8 +47,8 @@ export default class Controls extends React.Component {
     acceptedFiles.forEach(stationFile => {
       this.setState({stationError: ''});
       const reader = new FileReader();
-      reader.onabort = () => console.log('stationFile reading was aborted');
-      reader.onerror = () => console.log('stationFile reading has failed');
+      reader.onabort = () => console.warn('stationFile reading was aborted');
+      reader.onerror = () => console.warn('stationFile reading has failed');
       reader.onloadstart = () => this.setState({stationLoading: true});
       reader.onloadend = () => {
         onStationFileLoad(reader.result);
@@ -72,8 +73,8 @@ export default class Controls extends React.Component {
     files.forEach((handrailFile, i) => {
       this.setState({handrailError: ''});
       const reader = new FileReader();
-      reader.onabort = () => console.log('handrailFile reading was aborted');
-      reader.onerror = () => console.log('handrailFile reading has failed');
+      reader.onabort = () => console.warn('handrailFile reading was aborted');
+      reader.onerror = () => console.warn('handrailFile reading has failed');
       reader.onloadstart = () => {
         if (!handrailLoading) {
           this.setState({handrailLoading: true});
@@ -97,12 +98,11 @@ export default class Controls extends React.Component {
 
   handleStrFilesDrop(files) {
     const {onStrFilesLoad} = this.props;
-    const {strFiles} = this.state;
     const strResults = [];
     files.forEach((handrailFile, i) => {
       const reader = new FileReader();
-      reader.onabort = () => console.log('handrailFile reading was aborted');
-      reader.onerror = () => console.log('handrailFile reading has failed');
+      reader.onabort = () => console.warn('handrailFile reading was aborted');
+      reader.onerror = () => console.warn('handrailFile reading has failed');
       reader.onloadend = () => {
         strResults.push(reader.result);
         if (i === files.length - 1) {
@@ -191,3 +191,9 @@ export default class Controls extends React.Component {
     );
   }
 }
+
+Controls.propTypes = {
+  onStationFileLoad: PropTypes.func.isRequired,
+  onHandrailFilesLoad: PropTypes.func.isRequired,
+  onStrFilesLoad: PropTypes.func.isRequired
+};

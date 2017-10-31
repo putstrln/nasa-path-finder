@@ -10,8 +10,9 @@ import {
 import Detector from 'utils/detector';
 import Stats from 'stats-js';
 import OrbitControlsFactory from 'three-orbit-controls';
+import PropTypes from 'prop-types';
 
-const OrbitControls = OrbitControlsFactory(THREE);
+let OrbitControls = OrbitControlsFactory(THREE);
 export default class Renderer extends React.Component {
   constructor() {
     super();
@@ -171,3 +172,9 @@ export default class Renderer extends React.Component {
     );
   }
 }
+
+Renderer.propTypes = {
+  stationFile: PropTypes.object.isRequired,
+  handrailFiles: PropTypes.array.isRequired,
+  strFiles: PropTypes.array.isRequired
+};
