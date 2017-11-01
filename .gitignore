@@ -11,3 +11,4 @@ server/dist
 server/nbproject
 server/build.xml
 server/manifest.mf
+server/target
