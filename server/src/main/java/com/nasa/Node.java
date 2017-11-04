@@ -3,15 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.nasa;
+package dijkstra;
 
-import java.text.DecimalFormat;
+import java.util.List;
 
 /**
  *
  * @author jadov
  */
 public class Node {
+
     private String unique_node_name;
     private String geometry_file_name;
     private double x;
@@ -21,6 +22,8 @@ public class Node {
     private double yaw;
     private double roll;
     private String parent_node_name;
+    private double s0NodeDist;
+    private double labNodeDist;
 
     public Node() {
         unique_node_name = "nodeId";
@@ -35,7 +38,7 @@ public class Node {
     }
 
     public Node(String unique_node_name, String geometry_file_name, double x,
-        double y, double z, double pitch, double yaw, double roll, String parent_node_name) {
+            double y, double z, double pitch, double yaw, double roll, String parent_node_name) {
         this.unique_node_name = unique_node_name;
         this.geometry_file_name = geometry_file_name;
         this.x = x;
@@ -88,11 +91,11 @@ public class Node {
 
     @Override
     public String toString() {
-        return "unique_node_name: " + unique_node_name + "\ngeometry_file_name: "
-                + geometry_file_name + "\nx: " + String.valueOf(x) + " y: "
-                + String.valueOf(y) + " z: " + String.valueOf(z) + "\npitch: "
+        return "unique_node_name: " + unique_node_name + "\r\ngeometry_file_name: "
+                + geometry_file_name + "\r\nx: " + String.valueOf(x) + " y: "
+                + String.valueOf(y) + " z: " + String.valueOf(z) + "\r\npitch: "
                 + String.valueOf(pitch) + " yaw: " + String.valueOf(yaw) + " roll: "
-                + String.valueOf(roll) + "\nparent_node_name: " + parent_node_name + "\n\n";
+                + String.valueOf(roll) + "\r\nparent_node_name: " + parent_node_name + "\r\n";
     }
 
     public double node_distance_formula(Node node1, Node node2) {
@@ -112,12 +115,40 @@ public class Node {
 
         double node_distance = Math.sqrt(xDist + yDist + zDist);
 
-        //DecimalFormat df = new DecimalFormat(".####");
-        System.out.println("Distance from node " + node1.getNodeId()
-            + " to node " + node2.getNodeId() + " is: " + node_distance);
-
         return node_distance;
 
     }
 
+    public void get_node_neighbors(String nodeId) {
+        Node node1 = new Node();
+        CreateNodes cn = new CreateNodes();
+        cn.createS0HandHoldNodeList();
+        cn.createLabHandholdNodeList();
+        List<Node> s0HandHolds = cn.getS0HandHoldNode();
+        List<Node> labHandHolds = cn.getLabHandHoldNode();
+        for (int i = 0; i < s0HandHolds.size(); i++) {
+            if (s0HandHolds.get(i).getNodeId().equals(nodeId)) {
+                for (int j = 0; j < s0HandHolds.size(); j++) {
+                    s0NodeDist = node1.node_distance_formula(s0HandHolds.get(i), s0HandHolds.get(j));
+                    //need to figure out how to only cpature 4 closest nodes
+                    if (s0NodeDist > 0 && s0NodeDist <= 50) {
+                        System.out.println("Node " + s0HandHolds.get(i).getNodeId() 
+                                + " to node " + s0HandHolds.get(j).getNodeId() + " distance = " + s0NodeDist);
+                    } 
+                }
+            }
+        }
+        for (int i = 0; i < labHandHolds.size(); i++) {
+            if (labHandHolds.get(i).getNodeId().equals(nodeId)) {
+                for (int j = 0; j < labHandHolds.size(); j++) {
+                    labNodeDist = node1.node_distance_formula(labHandHolds.get(i), labHandHolds.get(j));
+                    //need to figure out how to only capture 4 closest nodes
+                    if (labNodeDist > 0 && labNodeDist <= 60) {
+                        System.out.println("Node " + labHandHolds.get(i).getNodeId() 
+                                + " to node " +  labHandHolds.get(j).getNodeId() + " distance = " + labNodeDist);
+                    } 
+                }
+            }
+        }     
+    }
 }

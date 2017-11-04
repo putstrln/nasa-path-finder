@@ -3,13 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.nasa;
+package dijkstra;
 
 /**
  *
  * @author jadov
  */
-public class Edge  {
+public class Edge {
+
     private final String id;
     private final Vertex source;
     private final Vertex destination;
@@ -25,6 +26,7 @@ public class Edge  {
     public String getId() {
         return id;
     }
+
     public Vertex getDestination() {
         return destination;
     }
@@ -32,6 +34,7 @@ public class Edge  {
     public Vertex getSource() {
         return source;
     }
+
     public int getWeight() {
         return weight;
     }
@@ -40,6 +43,5 @@ public class Edge  {
     public String toString() {
         return source + " " + destination;
     }
-
 
 }

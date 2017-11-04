@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.nasa;
+package dijkstra;
 
 /**
  *
@@ -12,6 +12,7 @@ package com.nasa;
 import java.util.List;
 
 public class Graph {
+
     private final List<Vertex> vertexes;
     private final List<Edge> edges;
 
@@ -27,7 +28,5 @@ public class Graph {
     public List<Edge> getEdges() {
         return edges;
     }
-
-
 
 }
