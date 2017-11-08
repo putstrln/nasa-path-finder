@@ -1,15 +1,24 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
+/* 
+ * Copyright (C) 2017 jadovan
+ *
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 package dijkstra;
 
-import java.util.List;
-
 /**
- *
- * @author jadov
+ * Project: NASA Path in conjunction with University of Maryland University College
+ * @author jadovan
  */
 public class Node {
 
@@ -22,10 +31,8 @@ public class Node {
     private double yaw;
     private double roll;
     private String parent_node_name;
-    private double s0NodeDist;
-    private double labNodeDist;
 
-    public Node() {
+    protected Node() {
         unique_node_name = "nodeId";
         geometry_file_name = "node.stl";
         x = 0.0;
@@ -37,7 +44,7 @@ public class Node {
         parent_node_name = "parentNode";
     }
 
-    public Node(String unique_node_name, String geometry_file_name, double x,
+    protected Node(String unique_node_name, String geometry_file_name, double x,
             double y, double z, double pitch, double yaw, double roll, String parent_node_name) {
         this.unique_node_name = unique_node_name;
         this.geometry_file_name = geometry_file_name;
@@ -50,55 +57,50 @@ public class Node {
         this.parent_node_name = parent_node_name;
     }
 
-    public Node(String unique_node_name, double x, double y, double z) {
+    protected Node(String unique_node_name, double x, double y, double z) {
         this.unique_node_name = unique_node_name;
         this.x = x;
         this.y = y;
         this.z = z;
     }
 
-    public void setNodeId(String unique_node_name) {
+    protected Node(String unique_node_name) {
         this.unique_node_name = unique_node_name;
     }
 
-    public String getNodeId() {
+    protected void setNodeId(String unique_node_name) {
+        this.unique_node_name = unique_node_name;
+    }
+
+    protected String getNodeId() {
         return unique_node_name;
     }
 
-    public void setX(double x) {
+    protected void setX(double x) {
         this.x = x;
     }
 
-    public double getX() {
+    protected double getX() {
         return x;
     }
 
-    public void setY(double y) {
+    protected void setY(double y) {
         this.y = y;
     }
 
-    public double getY() {
+    protected double getY() {
         return y;
     }
 
-    public void setZ(double z) {
+    protected void setZ(double z) {
         this.z = z;
     }
 
-    public double getZ() {
+    protected double getZ() {
         return z;
     }
 
-    @Override
-    public String toString() {
-        return "unique_node_name: " + unique_node_name + "\r\ngeometry_file_name: "
-                + geometry_file_name + "\r\nx: " + String.valueOf(x) + " y: "
-                + String.valueOf(y) + " z: " + String.valueOf(z) + "\r\npitch: "
-                + String.valueOf(pitch) + " yaw: " + String.valueOf(yaw) + " roll: "
-                + String.valueOf(roll) + "\r\nparent_node_name: " + parent_node_name + "\r\n";
-    }
-
-    public double node_distance_formula(Node node1, Node node2) {
+    protected double node_distance_formula(Node node1, Node node2) {
 
         double x1 = node1.getX();
         double x2 = node2.getX();
@@ -119,36 +121,43 @@ public class Node {
 
     }
 
-    public void get_node_neighbors(String nodeId) {
-        Node node1 = new Node();
-        CreateNodes cn = new CreateNodes();
-        cn.createS0HandHoldNodeList();
-        cn.createLabHandholdNodeList();
-        List<Node> s0HandHolds = cn.getS0HandHoldNode();
-        List<Node> labHandHolds = cn.getLabHandHoldNode();
-        for (int i = 0; i < s0HandHolds.size(); i++) {
-            if (s0HandHolds.get(i).getNodeId().equals(nodeId)) {
-                for (int j = 0; j < s0HandHolds.size(); j++) {
-                    s0NodeDist = node1.node_distance_formula(s0HandHolds.get(i), s0HandHolds.get(j));
-                    //need to figure out how to only cpature 4 closest nodes
-                    if (s0NodeDist > 0 && s0NodeDist <= 50) {
-                        System.out.println("Node " + s0HandHolds.get(i).getNodeId() 
-                                + " to node " + s0HandHolds.get(j).getNodeId() + " distance = " + s0NodeDist);
-                    } 
-                }
-            }
-        }
-        for (int i = 0; i < labHandHolds.size(); i++) {
-            if (labHandHolds.get(i).getNodeId().equals(nodeId)) {
-                for (int j = 0; j < labHandHolds.size(); j++) {
-                    labNodeDist = node1.node_distance_formula(labHandHolds.get(i), labHandHolds.get(j));
-                    //need to figure out how to only capture 4 closest nodes
-                    if (labNodeDist > 0 && labNodeDist <= 60) {
-                        System.out.println("Node " + labHandHolds.get(i).getNodeId() 
-                                + " to node " +  labHandHolds.get(j).getNodeId() + " distance = " + labNodeDist);
-                    } 
-                }
-            }
-        }     
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((unique_node_name == null) ? 0 : unique_node_name.hashCode());
+        return result;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        }
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        Node other = (Node) obj;
+        if (unique_node_name == null) {
+            if (other.unique_node_name != null) {
+                return false;
+            }
+        } else if (!unique_node_name.equals(other.unique_node_name)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public String toString() {
+        return "unique_node_name: " + unique_node_name + "\r\ngeometry_file_name: "
+                + geometry_file_name + "\r\nx: " + String.valueOf(x) + " y: "
+                + String.valueOf(y) + " z: " + String.valueOf(z) + "\r\npitch: "
+                + String.valueOf(pitch) + " yaw: " + String.valueOf(yaw) + " roll: "
+                + String.valueOf(roll) + "\r\nparent_node_name: " + parent_node_name + "\r\n";
+    }
+
 }
