@@ -8,7 +8,6 @@ import 'utils/stlLoader';
 import THREEx from 'utils/threex.domevents';
 
 const MMETER_PER_INCH = 0.00254;
-const PITCH_YAW_ROLL_ORDER = 'YZX';
 
 const defaultMaterialOptions = {
   color: '#B0C4DE'

@@ -1,3 +1,4 @@
+/* eslint-disable */
 /**
  * @author aleeper / http://adamleeper.com/
  * @author mrdoob / http://mrdoob.com/
@@ -204,7 +205,6 @@ THREE.STLLoader.prototype = {
 
 			const geometry = new THREE.BufferGeometry();
 			const patternFace = /facet([\s\S]*?)endfacet/g;
-			let faceCounter = 0;
 
 			const patternFloat = /[\s]+([+-]?(?:\d+.\d+|\d+.|\d+|.\d+)(?:[eE][+-]?\d+)?)/.source;
 			const patternVertex = new RegExp(`vertex${patternFloat}${patternFloat}${patternFloat}`, 'g');
@@ -225,7 +225,6 @@ THREE.STLLoader.prototype = {
 				const text = result[0];
 
 				while ((result = patternNormal.exec(text)) !== null) {
-
 					normal.x = parseFloat(result[1]);
 					normal.y = parseFloat(result[2]);
 					normal.z = parseFloat(result[3]);
@@ -256,9 +255,6 @@ THREE.STLLoader.prototype = {
 					// console.error( 'THREE.STLLoader: Something isn\'t right with the vertices of face number ' + faceCounter );
 
 				}
-
-				faceCounter++;
-
 			}
 
 			geometry.addAttribute('position', new THREE.Float32BufferAttribute(vertices, 3));

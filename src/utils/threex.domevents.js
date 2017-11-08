@@ -1,4 +1,4 @@
-// https://github.com/jeromeetienne/threex.domevents/blob/master/threex.domevents.js
+/* eslint-disable */ // https://github.com/jeromeetienne/threex.domevents/blob/master/threex.domevents.js
 
 // This THREEx helper makes it easy to handle the mouse events in your 3D scene
 //

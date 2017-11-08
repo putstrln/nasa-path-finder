@@ -1,46 +1,50 @@
-# {
-#   "extends": ["plugin:react/recommended", "eslint:recommended"],
-#   "env": {
-#     "browser": true,
-#     "node": true,
-#     "es6": true,
-#     "jest": true,
-#   },
-#
-#   "plugins": ["react", "jest"],
-#
-#   "parserOptions": {
-#     "ecmaVersion": 6,
-#     "sourceType": "module",
-#     "ecmaFeatures": {
-#       "jsx": true,
-#       "arrowFunctions": true,
-#       "binaryLiterals": true,
-#       "blockBindings": true,
-#       "classes": true,
-#       "defaultParams": true,
-#       "destructuring": true,
-#       "experimentalObjectRestSpread": true,
-#       "forOf": true,
-#       "generators": true,
-#       "modules": true,
-#       "objectLiteralComputedProperties": true,
-#       "objectLiteralDuplicateProperties": true,
-#       "objectLiteralShorthandMethods": true,
-#       "objectLiteralShorthandProperties": true,
-#       "octalLiterals": true,
-#       "regexUFlag": true,
-#       "regexYFlag": true,
-#       "spread": true,
-#       "superInFunctions": true,
-#       "templateStrings": true,
-#       "unicodeCodePointEscapes": true,
-#       "globalReturn": true,
-#       "prefer-const": true,
-#     },
-#   },
-#
-#   "rules": {
-#     "no-console": ["error", {allow: ["warn", "error"] }]
-#   }
-# }
+{
+  "extends": ["plugin:react/recommended", "eslint:recommended"],
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true,
+    "jest": true,
+  },
+
+  "globals": {
+    "THREE": true,
+  },
+
+  "plugins": ["react", "jest"],
+
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "jsx": true,
+      "arrowFunctions": true,
+      "binaryLiterals": true,
+      "blockBindings": true,
+      "classes": true,
+      "defaultParams": true,
+      "destructuring": true,
+      "experimentalObjectRestSpread": true,
+      "forOf": true,
+      "generators": true,
+      "modules": true,
+      "objectLiteralComputedProperties": true,
+      "objectLiteralDuplicateProperties": true,
+      "objectLiteralShorthandMethods": true,
+      "objectLiteralShorthandProperties": true,
+      "octalLiterals": true,
+      "regexUFlag": true,
+      "regexYFlag": true,
+      "spread": true,
+      "superInFunctions": true,
+      "templateStrings": true,
+      "unicodeCodePointEscapes": true,
+      "globalReturn": true,
+      "prefer-const": true,
+    },
+  },
+
+  "rules": {
+    "no-console": ["error", {allow: ["warn", "error"] }]
+  }
+}

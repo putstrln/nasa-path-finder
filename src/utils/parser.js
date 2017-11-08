@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 function parse_3d_file(filename, s) {
 	//determine type of file
 	switch (filename.split('.').pop().toLowerCase()) {
