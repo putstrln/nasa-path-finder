@@ -112,7 +112,7 @@ export default class Renderer extends React.Component {
       this.stationModelIsDirty = false;
     }
 
-    if (handrailFiles && Object.keys(handrailFiles).length > 0) {
+    if (handrailFiles && Object.keys(handrailFiles).length > 0 && strFiles && strFiles.length > 0 ) {
       Object.entries(handrailFiles).forEach(([name, handrailFile]) => {
         const handrailMesh = loadMeshFromFile(handrailFile, {color: 'red'});
         handrailMesh.name = name;
@@ -174,7 +174,7 @@ export default class Renderer extends React.Component {
 }
 
 Renderer.propTypes = {
-  stationFile: PropTypes.object.isRequired,
-  handrailFiles: PropTypes.array.isRequired,
+  stationFile: PropTypes.object,
+  handrailFiles: PropTypes.object.isRequired,
   strFiles: PropTypes.array.isRequired
 };

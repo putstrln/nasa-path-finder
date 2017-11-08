@@ -3,6 +3,115 @@ import Dropzone from 'react-dropzone';
 import fetch from 'isomorphic-fetch';
 import PropTypes from 'prop-types';
 
+const demoHandrailFiles = [
+  'LAB_0259.stl',
+  'LAB_0233.stl',
+  'LAB_0268.stl',
+  'LAB_0232.stl',
+  'LAB_0237.stl',
+  'LAB_0201.stl',
+  'LAB_0295.stl',
+  'LAB_0208.stl',
+  'LAB_0239.stl',
+  'LAB_0293.stl',
+  'LAB_0280.stl',
+  'LAB_0200.stl',
+  'LAB_0267.stl',
+  'LAB_0242.stl',
+  'LAB_0288.stl',
+  'LAB_0223.stl',
+  'LAB_0277.stl',
+  'LAB_0252.stl',
+  'LAB_0270.stl',
+  'LAB_0243.stl',
+  'LAB_0216.stl',
+  'LAB_0266.stl',
+  'GAP_SPAN_ESP2_8013_L0293.stl',
+  'LAB_0215.stl',
+  'LAB_0217.stl',
+  'LAB_0292.stl',
+  'LAB_0205.stl',
+  'LAB_0235.stl',
+  'LAB_0214.stl',
+  'LAB_0229.stl',
+  'LAB_0230.stl',
+  'LAB_0279.stl',
+  'LAB_0220.stl',
+  'LAB_0241.stl',
+  'LAB_0251.stl',
+  'LAB_0222.stl',
+  'LAB_0294.stl',
+  'LAB_0234.stl',
+  'GAP_SPAN_0231_0232.stl',
+  'LAB_0275.stl',
+  'HWY_XXX.stl',
+  'LAB_0261.stl',
+  'LAB_0286.stl',
+  'LAB_0240.stl',
+  'LAB_0250.stl',
+  'LAB_0253.stl',
+  'LAB_0219.stl',
+  'LAB_0228.stl',
+  'GAP_SPAN_0219_0232.stl',
+  'LAB_0209.stl',
+  'LAB_0207.stl',
+  'LAB_0282.stl',
+  'LAB_0291.stl',
+  'LAB_0231.stl',
+  'LAB_0287.stl',
+  'LAB_0297.stl',
+  'LAB_0236.stl',
+  'GAP_SPAN_L_N1.stl',
+  'LAB_0254.stl',
+  'LAB_0224.stl',
+  'LAB_0281.stl',
+  'LAB_0285.stl',
+  'LAB_0245.stl',
+  'LAB_0226.stl',
+  'LAB_0296.stl',
+  'LAB_0204.stl',
+  'LAB_0273.stl',
+  'GAP_SPAN_0296_0260.stl',
+  'LAB_0249.stl',
+  'LAB_0206.stl',
+  'LAB_0202.stl',
+  'LAB_0284.stl',
+  'LAB_0221.stl',
+  'LAB_0213.stl',
+  'LAB_0238.stl',
+  'LAB_0255.stl',
+  'LAB_0257.stl',
+  'LAB_0203.stl',
+  'LAB_0258.stl',
+  'LAB_SLIDEWIRE.stl',
+  'LAB_0274.stl',
+  'LAB_0227.stl',
+  'LAB_0265.stl',
+  'LAB_0248.stl',
+  'LAB_0225.stl',
+  'LAB_0218.stl',
+  'HWY_110.stl',
+  'LAB_0269.stl',
+  'GAP_SPAN_0251_0286.stl',
+  'LAB_0256.stl',
+  'LAB_0247.stl',
+  'LAB_0298.stl',
+  'LAB_0272.stl',
+  'LAB_0246.stl',
+  'LAB_0262.stl',
+  'GAP_SPAN_0288_0259.stl',
+  'LAB_0212.stl',
+  'LAB_eva_P7.stl',
+  'LAB_0260.stl',
+  'LAB_0211.stl',
+  'GAP_SPAN_0201_0239.stl',
+  'LAB_0263.stl',
+  'LAB_0244.stl',
+  'LAB_0264.stl',
+  'LAB_0210.stl',
+  'LAB_0271.stl',
+];
+
 export default class Controls extends React.Component {
   constructor() {
     super();
@@ -22,22 +131,38 @@ export default class Controls extends React.Component {
   }
 
   componentDidMount() {
-    const {onStationFileLoad} = this.props;
+    const {onStationFileLoad, onHandrailFilesLoad, onStrFilesLoad} = this.props;
     const fileName = './models/LAB_S0_geometry.stl';
+    const handrailDataFiles = {};
     // load a default stationFile for demo purposes
     this.setState({
       stationFile: {
         name: fileName,
         size: 35000000
       },
-      stationLoading: true
+      stationLoading: true,
+      handrailLoading: false,
     });
     fetch(fileName)
       .then(response => response.arrayBuffer())
       .then(data => {
         onStationFileLoad(data);
-        this.setState({stationLoading: false});
+        this.setState({stationLoading: false, });
       });
+    demoHandrailFiles.forEach(handrailFile => {
+      fetch(`./models/Handrails/LABHANDHOLDS/${handrailFile}`)
+        .then(response => response.arrayBuffer())
+        .then(data => {
+          handrailDataFiles[handrailFile] = data;
+          if (Object.keys(handrailDataFiles).length == demoHandrailFiles.length) {
+            onHandrailFilesLoad(handrailDataFiles);
+            this.setState({handrailLoading: false});
+          }
+        });
+    });
+    fetch('./models/Handrails/LABHANDHOLDS.str')
+      .then(response => response.text())
+      .then(data => onStrFilesLoad([data]));
   }
 
   handleStationFileDrop(acceptedFiles) {

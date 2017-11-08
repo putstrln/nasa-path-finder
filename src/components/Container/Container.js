@@ -7,7 +7,7 @@ export default class Container extends React.Component {
     super();
     this.state = {
       stationFile: null,
-      handrailFiles: [],
+      handrailFiles: {},
       strFiles: [],
     };
     this.handleStationFileLoad = this.handleStationFileLoad.bind(this);
