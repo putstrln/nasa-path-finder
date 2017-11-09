@@ -31,9 +31,16 @@ import java.util.Scanner;
  * @author jadovan
  */
 public class CreateNodes extends Node {
-
+    /**
+    * The following two file locations must be changed to the directory where the user wants 
+    * the files to be saved
+    */
     private final String FILENAME5 = "D:\\Java\\Dijkstra\\src\\dijkstra\\S0LABHANDHOLDS.txt";
     private final String FILENAME6 = "D:\\Java\\Dijkstra\\src\\dijkstra\\S0LABHANDHOLDSDISTANCES.txt";
+    /**
+    * The following two file locations must be changed to the user's current directory 
+    * where the files are saved on their computer, server, etc.
+    */
     File file1 = new File("D:\\Java\\Dijkstra\\src\\dijkstra\\S0HANDHOLDS.str");
     File file2 = new File("D:\\Java\\Dijkstra\\src\\dijkstra\\LABHANDHOLDS.str");
 
