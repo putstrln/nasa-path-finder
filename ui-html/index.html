@@ -1,0 +1,164 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>NASA Path UI template</title>
+        <meta name="description" content="">
+        <!-- <meta name="viewport" content="width=device-width, initial-scale=1"> -->
+
+		<link href="https://fonts.googleapis.com/css?family=Open+Sans:400,700" rel="stylesheet">
+
+        <link rel="stylesheet" href="css/pure-min.css">
+        <link rel="stylesheet" href="css/main.css">
+        <style type="text/css">
+        	
+    		/* Only for mockup, replace with ThreeJS model */
+			.model-temp {
+				background-image: url('images/temp-model.png');
+				background-size: cover;
+				width: 100%;
+				height:  100vh;
+			}
+
+        </style>
+    </head>
+    <body>
+		<aside class="control-panel">
+			<div class="handrail-controls">
+				<div class="logo">
+					<h1>NASA Path</h1>
+				</div>
+				<form class="handrail-inputs pure-form">
+					<fieldset class="handrail-select">
+						<div class="pure-g">
+							<div class="pure-u-1">
+								<label hidden for="startPos">Start Handrail</label>
+								<!-- should be autoselect of available handrails -->
+								<input id="startPos" class="pure-u-23-24" type="text" placeholder="Enter start handrail...">
+							</div>
+							<div class="pure-u-1">
+								<label hidden for="endPos">End Handrail</label>
+								<!-- should be autoselect of available handrails (without incl. start handrail) -->
+								<input id="endPos" class="pure-u-23-24" type="text" placeholder="Enter end handrail...">
+							</div>
+						</div>
+					</fieldset>
+					<fieldset class="pure-form">
+						<label for="wingspanInput">
+				            <span>Wingspan: </span><input id="wingspan" type="text"> <span>feet</span>
+				        </label>
+				        <div class="wingspan-increments">
+				        	<span>4 ft</span>
+				        	<span>7 ft</span>
+				        </div>
+				        <input type="range" id="wingspanInput" class="wingspan-range">
+					</fieldset>
+					<fieldset>
+						<div class="pure-g">
+							<div class="pure-u-1-2">
+								<button type="submit" class="pure-button pure-button-primary pure-u-23-24">Go</button>
+							</div>
+							<div class="pure-u-1-2">
+								<button type="submit" class="pure-button pure-button-secondary pure-u-23-24">Reset</button>
+							</div>
+						</div>
+					</fieldset>
+				</form>				
+			</div>
+			<div class="handrail-outputs">
+				<!-- dynamically update <span> in title to match selected path -->
+				<h2>Handrail path output <span>(1st Path)</span></h2>
+				<fieldset class="pure-form">
+					<div class="pure-g">
+						<label class="pure-u-1-3" for="path1">
+							<input id="path1" name="pathSelector" type="radio" checked><span> 1st Path</span>
+						</label>
+						<label class="pure-u-1-3" for="path2">
+							<input id="path2" name="pathSelector" type="radio"><span> 2nd Path</span>
+						</label>
+						<label class="pure-u-1-3" for="path3">
+							<input id="path3" name="pathSelector" type="radio"><span> 3rd Path</span>
+						</label>
+					</div>
+				</fieldset>
+				<fieldset>
+					<!-- dynamically update list to match selected path -->
+					<textarea class="pure-u-23-24 handrails-list" name="handrailList" id="handrailList" rows="20"></textarea>
+					<!-- The output could also be a table where each row is a handrail -->
+					<!-- <table class="pure-table handrails-list">
+						<tr>
+							<td>LAB_0200</td>
+						</tr>
+						<tr>
+							<td>LAB_0200</td>
+						</tr>
+						<tr>
+							<td>LAB_0200</td>
+						</tr>
+						<tr>
+							<td>LAB_0200</td>
+						</tr>
+						<tr>
+							<td>LAB_0200</td>
+						</tr>
+						<tr>
+							<td>LAB_0200</td>
+						</tr>
+						<tr>
+							<td>LAB_0200</td>
+						</tr>
+						<tr>
+							<td>LAB_0200</td>
+						</tr>
+						<tr>
+							<td>LAB_0200</td>
+						</tr>
+						<tr>
+							<td>LAB_0200</td>
+						</tr>
+					</table> -->
+				</fieldset>
+			</div>
+		</aside>
+        <main>
+        	<div class="model-temp"></div>
+        	<div class="Controls" style="padding: 1em;">
+			   	<div style="display: flex; justify-content: space-around;">
+			   		<div class="station-controls">
+			   			<div>Drag &amp; drop the station stl file to render...</div>
+			   			<div class="" aria-disabled="false" style="width: 100px; height: 100px; border: 1px dotted black;">
+			   				<div style="color: red;"></div>
+			   				<div>
+			   					<!-- react-text: 25 -->       
+			   					./models/LAB_S0_geometry.stl
+			   					<!-- /react-text -->       
+			   					<!-- react-text: 26 -->       
+			   					-
+			   					<!-- /react-text -->       
+			   					<!-- react-text: 27 -->       
+			   					35000000
+			   					<!-- /react-text -->       
+			   					<!-- react-text: 28 -->       
+			   					bytes
+			   					<!-- /react-text --> </div>
+			   				<input type="file" accept=".stl" autocomplete="off" style="display: none;"></div>
+			   		</div>
+			   		<div class="handrails-controls">
+			   			<div>Drag &amp; drop the handrail stl files to render...</div>
+			   			<div class="" aria-disabled="false" style="width: 100px; height: 100px; border: 1px dotted black;">
+			   				<div style="color: red;"></div>
+			   				<input type="file" accept=".stl" multiple="" autocomplete="off" style="display: none;"></div>
+			   		</div>
+			   		<div class="str-controls">
+			   			<div>
+			   				Drag &amp; drop one or more str files to position the handrails...
+			   			</div>
+			   			<div class="" aria-disabled="false" style="width: 100px; height: 100px; border: 1px dotted black;">
+			   				<input type="file" accept=".str" multiple="" autocomplete="off" style="display: none;"></div>
+			   		</div>
+			   	</div>
+			</div>
+        </main>
+    </body>
+</html>

@@ -1,0 +1,140 @@
+/* 
+
+Path Highlight colors 
+
+1st : #45FFFF
+2nd : #D7FF5F
+3rd : #EB9EFF
+
+*/
+
+
+
+/* UI CSS */
+
+body {
+  background: black;
+  overflow-x: hidden;
+  margin: 0;
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-size: 14px;
+  color: #4A4A4A;
+}
+
+/* Text */
+
+h1 {
+	size: 36px;
+	font-weight: bold;
+}
+
+/* Elements */
+
+button {
+	color: #4A4A4A;
+	font-weight: bold;
+}
+
+button.pure-button-primary, a.pure-button-primary {
+	color: #4A4A4A;
+	background: #d8d8d8;
+	background-image: linear-gradient(-180deg, #D8D8D8 0%, #B3B3B3 100%);
+	border: 1px solid #979797;
+	box-shadow: 0 1px 2px 0 rgba(0,0,0,0.20), inset 0 2px 0 0 #FFFFFF;
+	border-radius: 6px;
+}
+
+button.pure-button-secondary, a.pure-button-secondary {
+	color: #4A4A4A;
+	background-image: linear-gradient(-180deg, #F2F2F2 0%, #D4D4D4 100%);
+	border: 1px solid #979797;
+	box-shadow: 0 1px 2px 0 rgba(0,0,0,0.20), inset 0 2px 0 0 #FFFFFF;
+	border-radius: 6px;
+}
+
+/* Layout */
+
+main {
+  width: 100vw;
+  max-width: 100vw;
+  position: relative;
+}
+
+#stats, .Controls, .control-panel {
+	position: absolute;
+	top: 0;
+	background: #D8D8D8;
+	border: #979797 1px solid;
+}
+
+.logo {
+	margin-bottom: 40px;
+}
+
+.control-panel {
+	width: 20%;
+	min-width: 340px;
+	height: 100vh;
+	z-index: 20;
+	padding: 30px 20px;
+}
+.handrail-controls {
+	height: 50vh;
+}
+.handrail-outputs {
+	height: 50vh;
+}
+
+	.control-panel .handrail-controls fieldset:last-of-type {
+		margin-top: 40px;
+	}
+
+	.control-panel .handrail-select input {
+		margin-bottom: 20px;
+	}
+
+	.control-panel .wingspan-range {
+		display: block;
+		width: 100%;
+		margin-top: 10px;
+		margin-bottom: 20px;
+	}
+
+	input#wingspan {
+		width: 40px;
+	}
+
+	.control-panel .wingspan-increments span {
+		width: 48%;
+		display: inline-block;
+	}
+	.control-panel .wingspan-increments span:last-child {
+		text-align: right;
+	}
+
+	.handrail-outputs span {
+		display: inline-block;
+		padding-left: 5px;
+	}
+	/* first path */
+	.handrail-outputs label:nth-of-type(1) span {
+		border-bottom: #45FFFF 5px solid;
+	}
+	/* second path */
+	.handrail-outputs label:nth-of-type(2) span {
+		border-bottom: #D7FF5F 5px solid;
+	}
+	/* third path */
+	.handrail-outputs label:nth-of-type(3) span {
+		border-bottom: #EB9EFF 5px solid;
+	}
+
+.Controls {
+	font-size: 10px;
+	max-width: 350px;
+	right: 2em;
+}
+.station-controls div {
+	word-wrap: break-word;
+}
+
