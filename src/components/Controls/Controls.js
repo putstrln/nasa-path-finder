@@ -2,6 +2,10 @@ import React from 'react';
 import Dropzone from 'react-dropzone';
 import fetch from 'isomorphic-fetch';
 import PropTypes from 'prop-types';
+import Select from 'react-select';
+import 'react-select/dist/react-select.css';
+import Slider from 'rc-slider';
+import 'rc-slider/assets/index.css';
 
 const demoHandrailFiles = [
   'LAB_0259.stl',
@@ -123,17 +127,24 @@ export default class Controls extends React.Component {
       handrailError: '',
       handrailLoading: false,
       strFiles: [],
+      startHandrail: null,
+      endHandrail: null,
+      wingspan: 0,
     };
     this.handleStationFileDrop = this.handleStationFileDrop.bind(this);
     this.handleStationFileRejected = this.handleStationFileRejected.bind(this);
     this.handleHandrailFilesDrop = this.handleHandrailFilesDrop.bind(this);
     this.handleStrFilesDrop = this.handleStrFilesDrop.bind(this);
+    this.handleHandrailChange = this.handleHandrailChange.bind(this);
+    this.createHandrailOptions = this.createHandrailOptions.bind(this);
+    this.handleWingspanChange = this.handleWingspanChange.bind(this);
   }
 
   componentDidMount() {
     const {onStationFileLoad, onHandrailFilesLoad, onStrFilesLoad} = this.props;
     const fileName = './models/LAB_S0_geometry.stl';
     const handrailDataFiles = {};
+    const handrailFiles = [];
     // load a default stationFile for demo purposes
     this.setState({
       stationFile: {
@@ -154,9 +165,13 @@ export default class Controls extends React.Component {
         .then(response => response.arrayBuffer())
         .then(data => {
           handrailDataFiles[handrailFile] = data;
+          handrailFiles.push({name: handrailFile});
           if (Object.keys(handrailDataFiles).length == demoHandrailFiles.length) {
             onHandrailFilesLoad(handrailDataFiles);
-            this.setState({handrailLoading: false});
+            this.setState({
+              handrailLoading: false,
+              handrailFiles,
+            });
           }
         });
     });
@@ -242,6 +257,23 @@ export default class Controls extends React.Component {
     });
   }
 
+  handleHandrailChange(startOrEnd, handrail) {
+    this.setState({
+      [`${startOrEnd}Handrail`]: handrail
+    });
+  }
+
+  createHandrailOptions() {
+    return this.state.handrailFiles.map(file => ({
+      value: file.name.replace(/\.stl$/, ''),
+      label: file.name.replace(/\.stl$/, '')
+    }));
+  }
+
+  handleWingspanChange(wingspan) {
+    this.setState({wingspan});
+  }
+
   render() {
     const {
       stationFile,
@@ -251,11 +283,13 @@ export default class Controls extends React.Component {
       handrailError,
       handrailLoading,
       strFiles,
+      startHandrail,
+      endHandrail,
+      wingspan,
     } = this.state;
     return (
-      <div className='Controls' style={{padding: '1em'}}>
-        <div>Controls</div>
-        <div style={{display: 'flex', justifyContent: 'space-around'}}>
+      <div className='Controls'>
+        <div className='file-controls'>
           <div className='station-controls'>
             <div>Drag & drop the station stl file to render...</div>
             {stationLoading && <div style={{color: 'blue'}}>stationLoading..</div>}
@@ -311,6 +345,27 @@ export default class Controls extends React.Component {
               )}
             </Dropzone>
           </div>
+        </div>
+        <div className='handrails-selector'>
+          <Select
+            name='startHandrail'
+            placeholder='Select start handrail...'
+            value={startHandrail}
+            options={this.createHandrailOptions()}
+            onChange={option => this.handleHandrailChange('start', option)}
+          />
+          <Select
+            name='endHandrail'
+            placeholder='Select end handrail...'
+            value={endHandrail}
+            options={this.createHandrailOptions()}
+            onChange={option => this.handleHandrailChange('end', option)}
+          />
+        </div>
+        <div className='wingspan-control'>
+          <Slider value={wingspan}
+            onChange={this.handleWingspanChange}
+          />
         </div>
       </div>
     );

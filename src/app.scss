@@ -13,3 +13,18 @@ main {
   position: absolute;
   top: 15em;
 }
+
+.Container {
+  display: flex;
+}
+
+.Controls {
+  padding: 1em;
+  width: 35%;
+  display: flex;
+  flex-direction: column;
+  .file-controls {
+    display: flex;
+    justify-content: space-around;
+  }
+}

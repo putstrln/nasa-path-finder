@@ -34,7 +34,7 @@ export default class Container extends React.Component {
       strFiles,
     } = this.state;
     return (
-      <div>
+      <div className='Container'>
         <Controls
           onStationFileLoad={this.handleStationFileLoad}
           onHandrailFilesLoad={this.handleHandrailFilesLoad}
