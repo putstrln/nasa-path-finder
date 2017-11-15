@@ -94,6 +94,9 @@ export default class Renderer extends React.Component {
       stationFile,
       handrailFiles,
       strFiles,
+      startHandrail,
+      endHandrail,
+      routes,
     } = this.props;
     if (!stationFile) {
       return;
@@ -111,10 +114,24 @@ export default class Renderer extends React.Component {
       this.camera.lookAt(mesh);
       this.stationModelIsDirty = false;
     }
-
     if (handrailFiles && Object.keys(handrailFiles).length > 0 && strFiles && strFiles.length > 0 ) {
       Object.entries(handrailFiles).forEach(([name, handrailFile]) => {
-        const handrailMesh = loadMeshFromFile(handrailFile, {color: 'red'});
+        let color = 'red';
+        if (startHandrail && name === `${startHandrail.value}.stl`) {
+          color = 'green';
+        } else if (endHandrail && name === `${endHandrail.value}.stl`) {
+          color = 'black';
+        } else {
+          // refactor and exit early or just loop routes outside for performance
+          routes.forEach(route => {
+            route.nodes.forEach(node => {
+              if (name === `${node}.stl`) {
+                color = route.color;
+              }
+            });
+          });
+        }
+        const handrailMesh = loadMeshFromFile(handrailFile, {color});
         handrailMesh.name = name;
         this.handrailModels[name] = handrailMesh;
         this.scene.add(handrailMesh);
@@ -176,5 +193,8 @@ export default class Renderer extends React.Component {
 Renderer.propTypes = {
   stationFile: PropTypes.object,
   handrailFiles: PropTypes.object.isRequired,
-  strFiles: PropTypes.array.isRequired
+  strFiles: PropTypes.array.isRequired,
+  startHandrail: PropTypes.object,
+  endHandrail: PropTypes.object,
+  routes: PropTypes.array,
 };

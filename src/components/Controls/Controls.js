@@ -6,6 +6,9 @@ import Select from 'react-select';
 import 'react-select/dist/react-select.css';
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
+import {Tab, Tabs, TabList, TabPanel} from 'react-tabs';
+import 'react-tabs/style/react-tabs.css';
+import {Checkbox, CheckboxGroup} from 'react-checkbox-group';
 
 const demoHandrailFiles = [
   'LAB_0259.stl',
@@ -119,6 +122,11 @@ const demoHandrailFiles = [
 export default class Controls extends React.Component {
   constructor() {
     super();
+    this.defaultRoutes = [
+      {value: 1, color: '#45FFFF', nodes: []},
+      {value: 2, color: '#D7FF5F', nodes: []},
+      {value: 3, color: 'green', nodes: []},
+    ];
     this.state = {
       stationFile: null,
       stationError: '',
@@ -130,6 +138,7 @@ export default class Controls extends React.Component {
       startHandrail: null,
       endHandrail: null,
       wingspan: 0,
+      visibleRoutes: this.defaultRoutes,
     };
     this.handleStationFileDrop = this.handleStationFileDrop.bind(this);
     this.handleStationFileRejected = this.handleStationFileRejected.bind(this);
@@ -138,6 +147,8 @@ export default class Controls extends React.Component {
     this.handleHandrailChange = this.handleHandrailChange.bind(this);
     this.createHandrailOptions = this.createHandrailOptions.bind(this);
     this.handleWingspanChange = this.handleWingspanChange.bind(this);
+    this.submit = this.submit.bind(this);
+    this.reset = this.reset.bind(this);
   }
 
   componentDidMount() {
@@ -274,6 +285,54 @@ export default class Controls extends React.Component {
     this.setState({wingspan});
   }
 
+  reset() {
+    this.setState({
+      startHandrail: null,
+      endHandrail: null,
+      wingspan: 0,
+      visibleRoutes: this.defaultRoutes
+    });
+  }
+
+  submit() {
+    const {
+      startHandrail,
+      endHandrail,
+      visibleRoutes,
+    } = this.state;
+    this.props.onSubmit({
+      startHandrail,
+      endHandrail,
+      routes: visibleRoutes.map(route => ({
+        ...route,
+        nodes: [
+          'LAB_0259',
+          'LAB_0233',
+          'LAB_0268',
+          'LAB_0232',
+          'LAB_0237',
+          'LAB_0201',
+          'LAB_0295',
+          'LAB_0208',
+          'LAB_0239',
+          'LAB_0293',
+          'LAB_0280',
+          'LAB_0200',
+          'LAB_0267',
+          'LAB_0242',
+          'LAB_0288',
+          'LAB_0223',
+          'LAB_0277',
+          'LAB_0252',
+          'LAB_0270',
+          'LAB_0243',
+          'LAB_0216',
+          'LAB_0266',
+        ]
+      }))
+    });
+  }
+
   render() {
     const {
       stationFile,
@@ -286,87 +345,120 @@ export default class Controls extends React.Component {
       startHandrail,
       endHandrail,
       wingspan,
+      visibleRoutes,
     } = this.state;
     return (
       <div className='Controls'>
-        <div className='file-controls'>
-          <div className='station-controls'>
-            <div>Drag & drop the station stl file to render...</div>
-            {stationLoading && <div style={{color: 'blue'}}>stationLoading..</div>}
-            <Dropzone
-              onDrop={this.handleStationFileDrop}
-              multiple={false}
-              onDropRejected={this.handleStationFileRejected}
-              style={{
-                width: '100px',
-                height: '100px',
-                border: '1px dotted black'
-              }}
-              accept='.stl'
-            >
-              <div style={{color: 'red'}}>{stationError}</div>
-              {stationFile &&
-                <div>{stationFile.name} - {stationFile.size} bytes</div>
-              }
-            </Dropzone>
-          </div>
-          <div className='handrails-controls'>
-            <div>Drag & drop the handrail stl files to render...</div>
-            {handrailLoading && <div style={{color: 'blue'}}>handrail loading..</div>}
-            <Dropzone
-              onDrop={this.handleHandrailFilesDrop}
-              onDropRejected={this.handleHandrailFilesRejected}
-              style={{
-                width: '100px',
-                height: '100px',
-                border: '1px dotted black'
-              }}
-              accept='.stl'
-            >
-              <div style={{color: 'red'}}>{handrailError}</div>
-              {handrailFiles.length > 0 &&
-                <div>{handrailFiles.length} handrails loaded</div>
-              }
-            </Dropzone>
-          </div>
-          <div className='str-controls'>
-            <div>Drag & drop one or more str files to position the handrails...</div>
-            <Dropzone
-              onDrop={this.handleStrFilesDrop}
-              style={{
-                width: '100px',
-                height: '100px',
-                border: '1px dotted black'
-              }}
-              accept='.str'
-            >
-              {strFiles.map(strFile =>
-                <div key={strFile.name}>{strFile.name}</div>
-              )}
-            </Dropzone>
-          </div>
-        </div>
-        <div className='handrails-selector'>
-          <Select
-            name='startHandrail'
-            placeholder='Select start handrail...'
-            value={startHandrail}
-            options={this.createHandrailOptions()}
-            onChange={option => this.handleHandrailChange('start', option)}
-          />
-          <Select
-            name='endHandrail'
-            placeholder='Select end handrail...'
-            value={endHandrail}
-            options={this.createHandrailOptions()}
-            onChange={option => this.handleHandrailChange('end', option)}
-          />
-        </div>
-        <div className='wingspan-control'>
-          <Slider value={wingspan}
-            onChange={this.handleWingspanChange}
-          />
-        </div>
+        <Tabs>
+          <TabList>
+            <Tab>Controls</Tab>
+            <Tab>Upload Files</Tab>
+          </TabList>
+          <TabPanel>
+            <div className='handrails-selector'>
+              <Select
+                name='startHandrail'
+                placeholder='Select start handrail...'
+                value={startHandrail}
+                options={this.createHandrailOptions()}
+                onChange={option => this.handleHandrailChange('start', option)}
+              />
+              <Select
+                name='endHandrail'
+                placeholder='Select end handrail...'
+                value={endHandrail}
+                options={this.createHandrailOptions()}
+                onChange={option => this.handleHandrailChange('end', option)}
+              />
+            </div>
+            <div className='wingspan-control'>
+              Wingspan: {wingspan} ft
+              <Slider value={wingspan}
+                onChange={this.handleWingspanChange}
+                min={0}
+                max={100}
+                marks={{
+                  0: '0 ft',
+                  100: '100 ft'
+                }}
+              />
+            </div>
+            <div className='route-select-control'>
+              <strong>Visible Routes</strong>
+              <CheckboxGroup name="routes" value={visibleRoutes} onChange={routes => this.setState({visibleRoutes: routes})}>
+                {this.defaultRoutes.map(route => (
+                  <label style={{borderBottom: `${route.color} 5px solid`}} key={route.value}>
+                    <Checkbox value={route} />
+                    Route {route.value}
+                  </label>
+                ))}
+              </CheckboxGroup>
+            </div>
+            <div className='action-control'>
+              <button onClick={this.submit}>Go</button>
+              <button onClick={this.reset}>Reset</button>
+            </div>
+          </TabPanel>
+          <TabPanel>
+            <div className='file-controls'>
+              <div className='station-controls'>
+                <div>Drag & drop the station stl file to render...</div>
+                {stationLoading && <div style={{color: 'blue'}}>stationLoading..</div>}
+                <Dropzone
+                  onDrop={this.handleStationFileDrop}
+                  multiple={false}
+                  onDropRejected={this.handleStationFileRejected}
+                  style={{
+                    width: '100px',
+                    height: '100px',
+                    border: '1px dotted black'
+                  }}
+                  accept='.stl'
+                >
+                  <div style={{color: 'red'}}>{stationError}</div>
+                  {stationFile &&
+                    <div>{stationFile.name} - {stationFile.size} bytes</div>
+                  }
+                </Dropzone>
+              </div>
+              <div className='handrails-controls'>
+                <div>Drag & drop the handrail stl files to render...</div>
+                {handrailLoading && <div style={{color: 'blue'}}>handrail loading..</div>}
+                <Dropzone
+                  onDrop={this.handleHandrailFilesDrop}
+                  onDropRejected={this.handleHandrailFilesRejected}
+                  style={{
+                    width: '100px',
+                    height: '100px',
+                    border: '1px dotted black'
+                  }}
+                  accept='.stl'
+                >
+                  <div style={{color: 'red'}}>{handrailError}</div>
+                  {handrailFiles.length > 0 &&
+                    <div>{handrailFiles.length} handrails loaded</div>
+                  }
+                </Dropzone>
+              </div>
+              <div className='str-controls'>
+                <div>Drag & drop one or more str files to position the handrails...</div>
+                <Dropzone
+                  onDrop={this.handleStrFilesDrop}
+                  style={{
+                    width: '100px',
+                    height: '100px',
+                    border: '1px dotted black'
+                  }}
+                  accept='.str'
+                >
+                  {strFiles.map(strFile =>
+                    <div key={strFile.name}>{strFile.name}</div>
+                  )}
+                </Dropzone>
+              </div>
+            </div>
+          </TabPanel>
+        </Tabs>
       </div>
     );
   }
