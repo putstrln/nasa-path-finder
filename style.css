@@ -13,3 +13,63 @@ main {
   position: absolute;
   top: 15em;
 }
+
+.Container {
+  display: flex;
+}
+
+.Container .header {
+  display: flex;
+  justify-content: space-around;
+  background: white;
+  height: 2em;
+  align-items: center;
+}
+
+.Container .header .sidebar-anchor {
+  cursor: pointer;
+}
+
+.Container .sidebar-hide-button {
+  cursor: pointer;
+  position: absolute;
+  bottom: 1em;
+  right: 1em;
+  border: 1px solid black;
+  padding: 0.5em;
+}
+
+.Controls {
+  padding: 1em;
+  min-width: 15%;
+  display: flex;
+  flex-direction: column;
+}
+
+.Controls .route-select-control {
+  margin-top: 2em;
+}
+
+.Controls .action-control {
+  margin-top: 1em;
+  display: flex;
+  justify-content: space-around;
+}
+
+.Controls .action-control button {
+  cursor: pointer;
+}
+
+.Controls .file-controls {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.Controls .handrails-selector {
+  margin-bottom: 1em;
+}
+
+.Controls .handrails-selector .Select:first-of-type {
+  margin-bottom: 1em;
+}
