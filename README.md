@@ -41,6 +41,12 @@ Native apps production builds *coming soon*.
 ## Test
 ```yarn test```
 
+## Backend
+
+To build, ```yarn compile```
+
+To run, ```yarn start:server```
+
 ## Structure
 
 * UI Components are React components and live in ```src/components```.
