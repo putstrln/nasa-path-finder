@@ -95,7 +95,7 @@ public class App extends NanoHTTPD {
         }
       ]
     */
-    /*String[] fakeNodes = {
+    String[] fakeNodes = {
       "LAB_0259",
       "LAB_0233",
       "LAB_0268",
@@ -118,14 +118,9 @@ public class App extends NanoHTTPD {
       "LAB_0243",
       "LAB_0216",
       "LAB_0266",
-    };*/
-    DijkstraPaths djkPath = new DijkstraPaths();
-        djkPath.testExecutePath1(rr.getStartHandrail(), rr.getEndHandRail());
-        djkPath.testExecutePath2(rr.getStartHandrail(), rr.getEndHandRail());
-        djkPath.testExecutePath3(rr.getStartHandrail(), rr.getEndHandRail());
+    };
 
-        System.out.println();
-    String resultJson = "[{\"nodes\":" + gson.toJson(djkPath) + "}]";
+    String resultJson = "[{\"nodes\":" + gson.toJson(fakeNodes) + "}]";
     Response response = newFixedLengthResponse(resultJson);
     response.addHeader("Access-Control-Allow-Origin", "*");
     return response;
