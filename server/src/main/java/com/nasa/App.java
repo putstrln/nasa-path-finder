@@ -5,7 +5,7 @@ import java.util.Map;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Arrays;
-import org.nanohttpd.protocols.http.response.Response;
+import fi.iki.elonen.NanoHTTPD.Response;
 
 //import org.nanohttpd.NanoHTTPD;
 // NOTE: If you"re using NanoHTTPD < 3.0.0 the namespace is different,
