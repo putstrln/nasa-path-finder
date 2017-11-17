@@ -52,6 +52,40 @@ const positionModelsBasedOnStrFile = (modelsMap, file) => {
   }
 };
 
+const parseNodesFromStrFile = file => {
+  const nodes = [];
+  const allLines = file.split(/\r\n|\n/);
+  allLines.splice(allLines.length - 1, 1); // last line is empty
+  /*
+    example format
+    ------------------
+    HWY_XXX
+    HWY_XXX.stl
+    221.42 0.00 190.95
+    180.00 0.00 180.00
+    SSREF
+  */
+  for (let i = 0; i < allLines.length; i += 5) {
+    const unique_node_name = allLines[i];
+    const geometry_file_name = unique_node_name + '.stl';
+    const [x, y, z] = allLines[i + 2].split(' ');
+    const [pitch, yaw, roll] = allLines[i + 3].split(' ');
+    const parent_node_name = allLines[i + 4];
+    nodes.push({
+      unique_node_name,
+      geometry_file_name,
+      x,
+      y,
+      z,
+      pitch,
+      yaw,
+      roll,
+      parent_node_name
+    });
+  }
+  return nodes;
+};
+
 const createDomEvents = (camera, renderer) => {
   return new THREEx.DomEvents(camera, renderer.domElement);
 };
@@ -79,5 +113,6 @@ export {
   positionModelsBasedOnStrFile,
   createDomEvents,
   bindDomEventsToMeshes,
-  unbindDomEventsFromMeshes
+  unbindDomEventsFromMeshes,
+  parseNodesFromStrFile
 }

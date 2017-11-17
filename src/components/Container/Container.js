@@ -4,6 +4,8 @@ import Controls from 'components/Controls/Controls';
 import Sidebar from 'react-sidebar';
 import 'react-sticky-header/styles.css';
 import StickyHeader from 'react-sticky-header';
+import {parseNodesFromStrFile} from 'utils/nodeProcessor/nodeProcessor';
+import fetch from 'isomorphic-fetch';
 
 export default class Container extends React.Component {
   constructor() {
@@ -17,6 +19,7 @@ export default class Container extends React.Component {
       endHandrail: null,
       routes: [],
     };
+    this.handrails = [];
     this.handleStationFileLoad = this.handleStationFileLoad.bind(this);
     this.handleHandrailFilesLoad = this.handleHandrailFilesLoad.bind(this);
     this.handleStrFilesLoad = this.handleStrFilesLoad.bind(this);
@@ -33,6 +36,9 @@ export default class Container extends React.Component {
   }
 
   handleStrFilesLoad(strFiles) {
+    strFiles.forEach(file =>
+      this.handrails = this.handrails.concat(parseNodesFromStrFile(file))
+    );
     this.setState({strFiles});
   }
 
@@ -41,7 +47,26 @@ export default class Container extends React.Component {
   }
 
   handleSubmit(data) {
-    this.setState({...data});
+    fetch('http://localhost:8080', {
+      method: 'post',
+      body: JSON.stringify({
+        startHandrail: data.startHandrail,
+        endHandrail: data.endHandrail,
+        nodes: this.handrails
+      })
+    })
+      .then(resp => resp.json())
+      .then(json => {
+        const firstRoute = json[0];
+        this.setState({
+          ...data,
+          routes: data.routes.map(route => ({
+            ...route,
+            nodes: firstRoute.nodes // later change it to 1st, 2nd, 3rd route etc
+          }))
+        });
+      })
+      .catch(e => console.error(e));
   }
 
   render() {

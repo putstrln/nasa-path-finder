@@ -3,7 +3,9 @@ package com.nasa;
 import java.io.IOException;
 import java.util.Map;
 import java.util.List;
+import java.util.ArrayList;
 import java.util.Arrays;
+import org.nanohttpd.protocols.http.response.Response;
 
 //import org.nanohttpd.NanoHTTPD;
 // NOTE: If you"re using NanoHTTPD < 3.0.0 the namespace is different,
@@ -43,38 +45,49 @@ public class App extends NanoHTTPD {
     }
     /*
       example client request body
-      [{
-      	"unique_node_name": "HWY_XXX",
-      	"geometry_file_name": "HWY_XXX.stl",
-      	"x": "221.42",
-      	"y": "0.00",
-      	"z": "190.95",
-      	"pitch": "180.00",
-      	"yaw": "0.00",
-      	"roll": "180.00",
-      	"parent_node_name": "SSREF"
-      },
       {
-      	"unique_node_name": "HWY_XXX",
-      	"geometry_file_name": "HWY_XXX.stl",
-      	"x": "221.42",
-      	"y": "0.00",
-      	"z": "190.95",
-      	"pitch": "180.00",
-      	"yaw": "0.00",
-      	"roll": "180.00",
-      	"parent_node_name": "SSREF"
-      }]
+        startHandrail: 'ABC',
+        endHandrail: 'XYZ',
+        nodes: [{
+        	"unique_node_name": "HWY_XXX",
+        	"geometry_file_name": "HWY_XXX.stl",
+        	"x": "221.42",
+        	"y": "0.00",
+        	"z": "190.95",
+        	"pitch": "180.00",
+        	"yaw": "0.00",
+        	"roll": "180.00",
+        	"parent_node_name": "SSREF"
+        },
+        {
+        	"unique_node_name": "HWY_XXX",
+        	"geometry_file_name": "HWY_XXX.stl",
+        	"x": "221.42",
+        	"y": "0.00",
+        	"z": "190.95",
+        	"pitch": "180.00",
+        	"yaw": "0.00",
+        	"roll": "180.00",
+        	"parent_node_name": "SSREF"
+        }],
+      }
     */
     String postBody = map.get("postData");
     Gson gson = new Gson();
-    Node[] nodes = gson.fromJson(postBody, Node[].class);
+    RouteRequest rr = new RouteRequest("", "", new ArrayList<Node>());
+    try {
+      rr = gson.fromJson(postBody, RouteRequest.class);
+    } catch (Exception e) {
+      System.out.println(e.getMessage());
+    }
+    System.out.println(rr.getStartHandrail());
+    System.out.println(rr.getEndHandrail());
+    ArrayList<Node> nodes = rr.getNodes();
     for (Node node : nodes) {
       System.out.println(node.toString());
     }
-    List nodeList = Arrays.asList(nodes);
     /*
-      use nodeList to process shortest path and return a json array of routes documented in architecture document. For example,
+      use nodes to process shortest path and return a json array of routes documented in architecture document. For example,
       [
         {
           nodes: [],
@@ -107,6 +120,8 @@ public class App extends NanoHTTPD {
       "LAB_0266",
     };
     String resultJson = "[{\"nodes\":" + gson.toJson(fakeNodes) + "}]";
-    return newFixedLengthResponse(resultJson);
+    Response response = newFixedLengthResponse(resultJson);
+    response.addHeader("Access-Control-Allow-Origin", "*");
+    return response;
   }
 }
