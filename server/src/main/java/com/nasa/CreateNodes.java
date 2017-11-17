@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (C) 2017 jadovan
  *
  * This program is free software: you can redistribute it and/or modify
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package dijkstra;
+package com.nasa;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -32,13 +32,13 @@ import java.util.Scanner;
  */
 public class CreateNodes extends Node {
     /**
-    * The following two file locations must be changed to the directory where the user wants 
+    * The following two file locations must be changed to the directory where the user wants
     * the files to be saved
     */
     private final String FILENAME5 = "D:\\Java\\Dijkstra\\src\\dijkstra\\S0LABHANDHOLDS.txt";
     private final String FILENAME6 = "D:\\Java\\Dijkstra\\src\\dijkstra\\S0LABHANDHOLDSDISTANCES.txt";
     /**
-    * The following two file locations must be changed to the user's current directory 
+    * The following two file locations must be changed to the user's current directory
     * where the files are saved on their computer, server, etc.
     */
     File file1 = new File("D:\\Java\\Dijkstra\\src\\dijkstra\\S0HANDHOLDS.str");
@@ -151,9 +151,9 @@ public class CreateNodes extends Node {
     }
 
     /* *************************************************************************
-    * The following are only needed if wanting to create each type of 
+    * The following are only needed if wanting to create each type of
     * seperate node .txt file
-    
+
     private final String FILENAME1 = "D:\\Java\\Dijkstra\\src\\dijkstra\\S0HANDHOLDS.txt";
     private final String FILENAME2 = "D:\\Java\\Dijkstra\\src\\dijkstra\\LABHANDHOLDS.txt";
     private final String FILENAME3 = "D:\\Java\\Dijkstra\\src\\dijkstra\\S0HANDHOLDSDISTANCES.txt";
@@ -170,13 +170,13 @@ public class CreateNodes extends Node {
     private FileWriter fw2 = null;
     private FileWriter fw3 = null;
     private FileWriter fw4 = null;
-    
+
     ************************************************************************** */
 
  /* *************************************************************************
-    * The following methods only need to be utilized if wanting to create the 
+    * The following methods only need to be utilized if wanting to create the
     * files for each separate node type and Arraylists for each node type.
-    
+
     public void createS0HandHoldNodeList() {
 
         try {

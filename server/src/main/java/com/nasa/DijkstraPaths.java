@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package dijkstra;
+package com.nasa;
 
 /**
  * Project: NASA Path in conjunction with University of Maryland University
@@ -35,7 +35,7 @@ public class DijkstraPaths {
     public void testExecutePath1(String source, String destination) {
         nodes = new ArrayList<>();
         edges = new ArrayList<>();
-        
+
         CreateNodes cn = new CreateNodes();
         cn.createS0LabHandHoldNodeList();
         cn.createS0LabHandHoldNodeListDistances();
@@ -45,15 +45,15 @@ public class DijkstraPaths {
             Node location = new Node(cn.s0LabHandHoldNodeList.get(i).getNodeId());
             nodes.add(location);
         }
-        
-        
+
+
 
         for (int j = 0; j < cn.s0LabHandHoldNodeList.size(); j++) {
             for (int k = 0; k < cn.s0LabHandHoldNodeList.size(); k++) {
                 String s0LabNodesJ = cn.s0LabHandHoldNodeIndexList.get(j);
                 String s0LabNodesK = cn.s0LabHandHoldNodeIndexList.get(k);
                 double weight = cn.node_distance_formula(cn.s0LabHandHoldNodeList.get(j), cn.s0LabHandHoldNodeList.get(k));
-                if (weight > 0 && weight <= 54) {         
+                if (weight > 0 && weight <= 54) {
                     addLane("Edge_" + j, cn.s0LabHandHoldNodeIndexList.indexOf(s0LabNodesJ),
                             cn.s0LabHandHoldNodeIndexList.indexOf(s0LabNodesK), weight);
                 }
@@ -62,7 +62,7 @@ public class DijkstraPaths {
         }
 
         /* *********************************************************************
-        * The following lines test the Dijkstra Algorithm by retrieving the 
+        * The following lines test the Dijkstra Algorithm by retrieving the
         * ArrayList index number of the source and destination nodes entered.
         * This process is evaluated in the TestDistance.java file utilizing the
         * Scanner method. This tests the first shortest path.
@@ -102,7 +102,7 @@ public class DijkstraPaths {
             for (int k = 0; k < cn.s0LabHandHoldNodeList.size(); k++) {
                 String s0LabNodesJ = cn.s0LabHandHoldNodeIndexList.get(j);
                 String s0LabNodesK = cn.s0LabHandHoldNodeIndexList.get(k);
-                double weight = cn.node_distance_formula(cn.s0LabHandHoldNodeList.get(j), cn.s0LabHandHoldNodeList.get(k));                
+                double weight = cn.node_distance_formula(cn.s0LabHandHoldNodeList.get(j), cn.s0LabHandHoldNodeList.get(k));
                 if (weight > 0 && weight <= 63) {
                     addLane("Edge_" + j, cn.s0LabHandHoldNodeIndexList.indexOf(s0LabNodesJ),
                             cn.s0LabHandHoldNodeIndexList.indexOf(s0LabNodesK), weight);
@@ -113,7 +113,7 @@ public class DijkstraPaths {
         }
 
         /* *********************************************************************
-        * The following lines test the Dijkstra Algorithm by retrieving the 
+        * The following lines test the Dijkstra Algorithm by retrieving the
         * ArrayList index number of the source and destination nodes entered.
         * This process is evaluated in the TestDistance.java file utilizing the
         * Scanner method. This tests the second shortest path.
@@ -153,7 +153,7 @@ public class DijkstraPaths {
             for (int k = 0; k < cn.s0LabHandHoldNodeList.size(); k++) {
                 String s0LabNodesJ = cn.s0LabHandHoldNodeIndexList.get(j);
                 String s0LabNodesK = cn.s0LabHandHoldNodeIndexList.get(k);
-                double weight = cn.node_distance_formula(cn.s0LabHandHoldNodeList.get(j), cn.s0LabHandHoldNodeList.get(k));                
+                double weight = cn.node_distance_formula(cn.s0LabHandHoldNodeList.get(j), cn.s0LabHandHoldNodeList.get(k));
                 if (weight > 0 && weight <= 72) {
                     addLane("Edge_" + j, cn.s0LabHandHoldNodeIndexList.indexOf(s0LabNodesJ),
                             cn.s0LabHandHoldNodeIndexList.indexOf(s0LabNodesK), weight);
@@ -164,7 +164,7 @@ public class DijkstraPaths {
         }
 
         /* *********************************************************************
-        * The following lines test the Dijkstra Algorithm by retrieving the 
+        * The following lines test the Dijkstra Algorithm by retrieving the
         * ArrayList index number of the source and destination nodes entered.
         * This process is evaluated in the TestDistance.java file utilizing the
         * Scanner method. This tests the third shortest path.
@@ -195,9 +195,9 @@ public class DijkstraPaths {
     /* **These two methods are only needed if creating the nodes seperately
         * cn.createS0HandHoldNodeList();
         * cn.createLabHandholdNodeList();
-        
+
         * These for loops only add lanes to the lab nodes
-        
+
         for (int i = 0; i < cn.labHandHoldNodeList.size(); i++) {
             Node location = new Node(cn.labHandHoldNodeList.get(i).getNodeId());
             nodes.add(location);

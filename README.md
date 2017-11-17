@@ -47,6 +47,8 @@ To build, ```yarn compile```
 
 To run, ```yarn start:server```
 
+To do both, ```yarn compile:start:server```
+
 ## Structure
 
 * UI Components are React components and live in ```src/components```.
