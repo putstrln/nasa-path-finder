@@ -18,6 +18,7 @@ export default class Container extends React.Component {
       startHandrail: null,
       endHandrail: null,
       routes: [],
+      routesLoaded: false,
     };
     this.handrails = [];
     this.handleStationFileLoad = this.handleStationFileLoad.bind(this);
@@ -63,7 +64,8 @@ export default class Container extends React.Component {
           routes: data.routes.map(route => ({
             ...route,
             nodes: firstRoute.nodes // later change it to 1st, 2nd, 3rd route etc
-          }))
+          })),
+          routesLoaded: true
         });
       })
       .catch(e => console.error(e));
@@ -78,6 +80,7 @@ export default class Container extends React.Component {
       startHandrail,
       endHandrail,
       routes,
+      routesLoaded,
     } = this.state;
     return (
       <div className='Container'>
@@ -98,6 +101,23 @@ export default class Container extends React.Component {
                 onStrFilesLoad={this.handleStrFilesLoad}
                 onSubmit={this.handleSubmit}
               />
+              {routesLoaded &&
+                <div>
+                  <h1 className='results-header'>Results</h1>
+                  <div className='results'>
+                    {routes.map((route, routeI) =>
+                      <div key={routeI}>
+                        <div>Route {routeI + 1}</div>
+                        <ol>
+                          {route.nodes.map((node, nodeI) =>
+                            <li key={nodeI}>{node}</li>
+                          )}
+                        </ol>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              }
               <div
                 className='sidebar-hide-button'
                 onClick={() => this.handleSidebarOpen(false)}

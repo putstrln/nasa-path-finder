@@ -64,3 +64,13 @@ main {
     margin-bottom: 1em;
   }
 }
+
+.results-header {
+  padding: 0.5em;
+}
+
+.results {
+  padding: 1em;
+  overflow: auto;
+  height: 20em;
+}
