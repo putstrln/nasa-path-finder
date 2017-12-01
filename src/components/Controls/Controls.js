@@ -18,7 +18,7 @@ export default class Controls extends React.Component {
     this.defaultRoutes = [
       {value: 1, color: '#45FFFF', nodes: []},
       {value: 2, color: '#D7FF5F', nodes: []},
-      {value: 3, color: 'green', nodes: []},
+      {value: 3, color: '#EB9EFF', nodes: []},
     ];
     this.state = {
       stationFile: null,

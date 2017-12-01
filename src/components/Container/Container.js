@@ -88,7 +88,7 @@ export default class Container extends React.Component {
           header={
             <div className='header'>
               <div className='sidebar-anchor' onClick={() => this.handleSidebarOpen(!sidebarOpen)}>Sidebar</div>
-              <div>NASA PATH FINDER</div>
+              <div>NASA EVA Navigator</div>
             </div>
           }
         />
