@@ -41,7 +41,7 @@ public class DijkstraPaths {
       }
       int sourceIndex = nodeIndexList.indexOf(source);
       int destinationIndex = nodeIndexList.indexOf(destination);
-      Graph graph = new Graph(nodes, getEdgesFromNodes(nodes, 70;
+      Graph graph = new Graph(nodes, getEdgesFromNodes(nodes, 70));
       Dijkstra dijkstra = new Dijkstra(graph);
       System.out.println("got d");
       dijkstra.execute(nodes.get(sourceIndex));
