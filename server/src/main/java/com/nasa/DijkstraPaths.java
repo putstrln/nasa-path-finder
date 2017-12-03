@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.nasa;
+package dijkstra;
 
 /**
  * Project: NASA Path in conjunction with University of Maryland University
@@ -31,45 +31,22 @@ public class DijkstraPaths {
     private List<Node> nodes;
     private List<Edge> edges;
 
-    // This method processes the Dijkstra Algorithm for the first shortest path
-    public void testExecutePath1(String source, String destination) {
-        nodes = new ArrayList<>();
-        edges = new ArrayList<>();
+    CreateNodes cn = new CreateNodes();
 
-        CreateNodes cn = new CreateNodes();
+    // This method processes the Dijkstra Algorithm for the three shortest paths
+    public void ExecutePaths(String source, String destination) {
+
         cn.createS0LabHandHoldNodeList();
-        cn.createS0LabHandHoldNodeListDistances();
-
-        // These for loops add lanes to the s0 and lab nodes for the first shortest path
-        for (int i = 0; i < cn.s0LabHandHoldNodeList.size(); i++) {
-            Node location = new Node(cn.s0LabHandHoldNodeList.get(i).getNodeId());
-            nodes.add(location);
-        }
-
-
-
-        for (int j = 0; j < cn.s0LabHandHoldNodeList.size(); j++) {
-            for (int k = 0; k < cn.s0LabHandHoldNodeList.size(); k++) {
-                String s0LabNodesJ = cn.s0LabHandHoldNodeIndexList.get(j);
-                String s0LabNodesK = cn.s0LabHandHoldNodeIndexList.get(k);
-                double weight = cn.node_distance_formula(cn.s0LabHandHoldNodeList.get(j), cn.s0LabHandHoldNodeList.get(k));
-                if (weight > 0 && weight <= 54) {
-                    addLane("Edge_" + j, cn.s0LabHandHoldNodeIndexList.indexOf(s0LabNodesJ),
-                            cn.s0LabHandHoldNodeIndexList.indexOf(s0LabNodesK), weight);
-                }
-            }
-
-        }
 
         /* *********************************************************************
-        * The following lines test the Dijkstra Algorithm by retrieving the
+        * The following lines executes the Dijkstra Algorithm by retrieving the
         * ArrayList index number of the source and destination nodes entered.
-        * This process is evaluated in the TestDistance.java file utilizing the
-        * Scanner method. This tests the first shortest path.
+        * This process is evaluated in the TestDijkstraPaths.java file utilizing
+        * the Scanner method. This executes the first shortest path.
         ********************************************************************* */
         int sourceIndex = cn.s0LabHandHoldNodeIndexList.indexOf(source);
         int destinationIndex = cn.s0LabHandHoldNodeIndexList.indexOf(destination);
-        Graph graph1 = new Graph(nodes, edges);
+        Graph graph1 = new Graph(pathNodes(), pathOneEdges());
         Dijkstra dijkstra1 = new Dijkstra(graph1);
         dijkstra1.execute(nodes.get(sourceIndex));
         LinkedList<Node> path1 = dijkstra1.getPath(nodes.get(destinationIndex));
@@ -77,149 +54,143 @@ public class DijkstraPaths {
         System.out.println("1st path from " + nodes.get(sourceIndex).getNodeId()
                 + " to " + nodes.get(destinationIndex).getNodeId());
 
-        path1.forEach((node1) -> {
-            System.out.println(node1.getNodeId());
-        });
-
-    }
-
-    // This method processes the Dijkstra Algorithm for the second shortest path
-    public void testExecutePath2(String source, String destination) {
-        nodes = new ArrayList<>();
-        edges = new ArrayList<>();
-
-        CreateNodes cn = new CreateNodes();
-        cn.createS0LabHandHoldNodeList();
-
-        // These for loops add lanes to the s0 and lab nodes for the second shortest path
-        for (int i = 0; i < cn.s0LabHandHoldNodeList.size(); i++) {
-            Node location = new Node(cn.s0LabHandHoldNodeList.get(i).getNodeId());
-            nodes.add(location);
-        }
-
-        for (int j = 0; j < cn.s0LabHandHoldNodeList.size(); j++) {
-
-            for (int k = 0; k < cn.s0LabHandHoldNodeList.size(); k++) {
-                String s0LabNodesJ = cn.s0LabHandHoldNodeIndexList.get(j);
-                String s0LabNodesK = cn.s0LabHandHoldNodeIndexList.get(k);
-                double weight = cn.node_distance_formula(cn.s0LabHandHoldNodeList.get(j), cn.s0LabHandHoldNodeList.get(k));
-                if (weight > 0 && weight <= 63) {
-                    addLane("Edge_" + j, cn.s0LabHandHoldNodeIndexList.indexOf(s0LabNodesJ),
-                            cn.s0LabHandHoldNodeIndexList.indexOf(s0LabNodesK), weight);
-                }
-
-            }
-
+        if (path1 != null) {
+            path1.forEach((node1) -> {
+                System.out.println(node1.getNodeId());
+            });
+        } else {
+            System.out.println("1st path could not be determined between these nodes.");
         }
 
         /* *********************************************************************
-        * The following lines test the Dijkstra Algorithm by retrieving the
+        * The following lines executes the Dijkstra Algorithm by retrieving the
         * ArrayList index number of the source and destination nodes entered.
-        * This process is evaluated in the TestDistance.java file utilizing the
-        * Scanner method. This tests the second shortest path.
+        * This process is evaluated in the TestDijkstraPaths.java file utilizing
+        * the Scanner method. This executes the second shortest path.
         ********************************************************************* */
-        int sourceIndex = cn.s0LabHandHoldNodeIndexList.indexOf(source);
-        int destinationIndex = cn.s0LabHandHoldNodeIndexList.indexOf(destination);
-        Graph graph2 = new Graph(nodes, edges);
+        Graph graph2 = new Graph(pathNodes(), pathTwoEdges());
         Dijkstra dijkstra2 = new Dijkstra(graph2);
         dijkstra2.execute(nodes.get(sourceIndex));
         LinkedList<Node> path2 = dijkstra2.getPath(nodes.get(destinationIndex));
 
-        System.out.println("2nd path from " + nodes.get(sourceIndex).getNodeId()
+        System.out.println("\n2nd path from " + nodes.get(sourceIndex).getNodeId()
                 + " to " + nodes.get(destinationIndex).getNodeId());
 
-        path2.forEach((node2) -> {
-            System.out.println(node2.getNodeId());
-        });
-
-    }
-
-    // This method processes the Dijkstra Algorithm for the third shortest path
-    public void testExecutePath3(String source, String destination) {
-        nodes = new ArrayList<>();
-        edges = new ArrayList<>();
-
-        CreateNodes cn = new CreateNodes();
-        cn.createS0LabHandHoldNodeList();
-
-        // These for loops add lanes to the s0 and lab nodes for the third shortest path
-        for (int i = 0; i < cn.s0LabHandHoldNodeList.size(); i++) {
-            Node location = new Node(cn.s0LabHandHoldNodeList.get(i).getNodeId());
-            nodes.add(location);
-        }
-
-        for (int j = 0; j < cn.s0LabHandHoldNodeList.size(); j++) {
-
-            for (int k = 0; k < cn.s0LabHandHoldNodeList.size(); k++) {
-                String s0LabNodesJ = cn.s0LabHandHoldNodeIndexList.get(j);
-                String s0LabNodesK = cn.s0LabHandHoldNodeIndexList.get(k);
-                double weight = cn.node_distance_formula(cn.s0LabHandHoldNodeList.get(j), cn.s0LabHandHoldNodeList.get(k));
-                if (weight > 0 && weight <= 72) {
-                    addLane("Edge_" + j, cn.s0LabHandHoldNodeIndexList.indexOf(s0LabNodesJ),
-                            cn.s0LabHandHoldNodeIndexList.indexOf(s0LabNodesK), weight);
-                }
-
-            }
-
+        if (path2 != null) {
+            path2.forEach((node2) -> {
+                System.out.println(node2.getNodeId());
+            });
+        } else {
+            System.out.println("2nd path could not be determined between these nodes.");
         }
 
         /* *********************************************************************
-        * The following lines test the Dijkstra Algorithm by retrieving the
+        * The following lines executes the Dijkstra Algorithm by retrieving the
         * ArrayList index number of the source and destination nodes entered.
-        * This process is evaluated in the TestDistance.java file utilizing the
-        * Scanner method. This tests the third shortest path.
+        * This process is evaluated in the TestDijkstraPaths.java file utilizing
+        * the Scanner method. This exeuctes the third shortest path.
         ********************************************************************* */
-        int sourceIndex = cn.s0LabHandHoldNodeIndexList.indexOf(source);
-        int destinationIndex = cn.s0LabHandHoldNodeIndexList.indexOf(destination);
-        Graph graph3 = new Graph(nodes, edges);
+        Graph graph3 = new Graph(pathNodes(), pathThreeEdges());
         Dijkstra dijkstra3 = new Dijkstra(graph3);
         dijkstra3.execute(nodes.get(sourceIndex));
         LinkedList<Node> path3 = dijkstra3.getPath(nodes.get(destinationIndex));
 
-        System.out.println("3rd path from " + nodes.get(sourceIndex).getNodeId()
+        System.out.println("\n3rd path from " + nodes.get(sourceIndex).getNodeId()
                 + " to " + nodes.get(destinationIndex).getNodeId());
 
-        path3.forEach((node3) -> {
-            System.out.println(node3.getNodeId());
-        });
+        if (path3 != null) {
+            path3.forEach((node3) -> {
+                System.out.println(node3.getNodeId());
+            });
+        } else {
+            System.out.println("3rd path could not be determined between these nodes.");
+        }
 
     }
 
-    // This method creates the Edge lanes to be processed by the Dijkstra Algorithm
+    // This method is used for creating the Edge lanes to be processed by the Dijkstra Algorithm
     private void addLane(String laneId, int sourceLocNo, int destLocNo,
             double duration) {
         Edge lane = new Edge(laneId, nodes.get(sourceLocNo), nodes.get(destLocNo), duration);
         edges.add(lane);
     }
 
-    /* **These two methods are only needed if creating the nodes seperately
-        * cn.createS0HandHoldNodeList();
-        * cn.createLabHandholdNodeList();
+    // This method adds node locations for the shortest paths
+    private List pathNodes() {
+        nodes = new ArrayList<>();
 
-        * These for loops only add lanes to the lab nodes
+        cn.createS0LabHandHoldNodeList();
 
-        for (int i = 0; i < cn.labHandHoldNodeList.size(); i++) {
-            Node location = new Node(cn.labHandHoldNodeList.get(i).getNodeId());
+        // These for loops add lanes to the s0 and lab nodes for the shortest paths
+        for (int i = 0; i < cn.s0LabHandHoldNodeList.size(); i++) {
+            Node location = new Node(cn.s0LabHandHoldNodeList.get(i).getNodeId());
             nodes.add(location);
         }
 
-        for (int j = 0; j < cn.labHandHoldNodeList.size(); j++) {
+        return nodes;
+    }
 
-            for (int k = 0; k < cn.labHandHoldNodeList.size(); k++) {
-                String labNodesJ = cn.labHandHoldNodeIndexList.get(j);
-                String labNodesK = cn.labHandHoldNodeIndexList.get(k);
-                if (cn.node_distance_formula(cn.labHandHoldNodeList.get(j), cn.labHandHoldNodeList.get(k)) > 0
-                        && cn.node_distance_formula(cn.labHandHoldNodeList.get(j), cn.labHandHoldNodeList.get(k)) < 52) {
-                    addLane("Edge_" + j, cn.labHandHoldNodeIndexList.indexOf(labNodesJ),
-                            cn.labHandHoldNodeIndexList.indexOf(labNodesK),
-                            cn.node_distance_formula(cn.labHandHoldNodeList.get(j), cn.labHandHoldNodeList.get(k)));
-                    addLane("Edge_" + j, cn.s0HandHoldNodeIndexList.indexOf(s0NodesJ),
-                            cn.s0HandHoldNodeIndexList.indexOf(s0NodesK),
-                            cn.node_distance_formula(cn.s0HandHoldNodeList.get(j), cn.s0HandHoldNodeList.get(k)));
+    // This method adds lanes for the first shortest path
+    private List pathOneEdges() {
+        edges = new ArrayList<>();
+
+        cn.createS0LabHandHoldNodeList();
+
+        for (int j = 0; j < cn.s0LabHandHoldNodeList.size(); j++) {
+            for (int k = 0; k < cn.s0LabHandHoldNodeList.size(); k++) {
+                String s0LabNodesJ = cn.s0LabHandHoldNodeIndexList.get(j);
+                String s0LabNodesK = cn.s0LabHandHoldNodeIndexList.get(k);
+                double weight = cn.node_distance_formula(cn.s0LabHandHoldNodeList.get(j), cn.s0LabHandHoldNodeList.get(k));
+                if (weight <= 54) {
+                    addLane("Edge_" + j, cn.s0LabHandHoldNodeIndexList.indexOf(s0LabNodesJ),
+                            cn.s0LabHandHoldNodeIndexList.indexOf(s0LabNodesK), weight);
                 }
-
             }
 
         }
-        *************************************************************************************************************** */
+        return edges;
+    }
+
+    // This method adds lanes for the second shortest path
+    private List pathTwoEdges() {
+        edges = new ArrayList<>();
+
+        cn.createS0LabHandHoldNodeList();
+
+        for (int j = 0; j < cn.s0LabHandHoldNodeList.size(); j++) {
+            for (int k = 0; k < cn.s0LabHandHoldNodeList.size(); k++) {
+                String s0LabNodesJ = cn.s0LabHandHoldNodeIndexList.get(j);
+                String s0LabNodesK = cn.s0LabHandHoldNodeIndexList.get(k);
+                double weight = cn.node_distance_formula(cn.s0LabHandHoldNodeList.get(j), cn.s0LabHandHoldNodeList.get(k));
+                if (weight <= 62) {
+                    addLane("Edge_" + j, cn.s0LabHandHoldNodeIndexList.indexOf(s0LabNodesJ),
+                            cn.s0LabHandHoldNodeIndexList.indexOf(s0LabNodesK), weight);
+                }
+            }
+
+        }
+        return edges;
+    }
+
+    // This method adds lanes for the third shortest path
+    private List pathThreeEdges() {
+        edges = new ArrayList<>();
+
+        cn.createS0LabHandHoldNodeList();
+
+        for (int j = 0; j < cn.s0LabHandHoldNodeList.size(); j++) {
+            for (int k = 0; k < cn.s0LabHandHoldNodeList.size(); k++) {
+                String s0LabNodesJ = cn.s0LabHandHoldNodeIndexList.get(j);
+                String s0LabNodesK = cn.s0LabHandHoldNodeIndexList.get(k);
+                double weight = cn.node_distance_formula(cn.s0LabHandHoldNodeList.get(j), cn.s0LabHandHoldNodeList.get(k));
+                if (weight <= 70) {
+                    addLane("Edge_" + j, cn.s0LabHandHoldNodeIndexList.indexOf(s0LabNodesJ),
+                            cn.s0LabHandHoldNodeIndexList.indexOf(s0LabNodesK), weight);
+                }
+            }
+
+        }
+        return edges;
+    }
+
 }
