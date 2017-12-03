@@ -85,20 +85,33 @@ public class App extends NanoHTTPD {
     System.out.println("Running algorithm...");
     DijkstraPaths dp = new DijkstraPaths();
     ArrayList<String> nodeIds = new ArrayList<String>();
+    ArrayList<List<Node>> listOfNodeLists = new ArrayList<List<Node>>();
+    String resultListsString = "";
     List<Node> nodes = new ArrayList<Node>();
-    try {
-      nodes = dp.getShortestPaths(rr.getStartHandrail(), rr.getEndHandrail(), rr.getNodes());
-    } catch (Exception e) {
-      System.out.println("There was an error running the algorithm");
-      e.printStackTrace();
-    }
-    if (nodes == null) {
-      System.out.println("There is no path");
-    } else {
-      for (Node node : nodes) {
-        String nodeId = node.getNodeId();
-        nodeIds.add(nodeId);
-        System.out.println(nodeId);
+    int[] thresholds = {54, 62, 70};
+    for (int i = 0; i < thresholds.length; i++) {
+      try {
+        nodes = dp.getShortestPath(rr.getStartHandrail(), rr.getEndHandrail(), rr.getNodes(), thresholds[i]);
+      } catch (Exception e) {
+        System.out.println("There was an error running the algorithm");
+        e.printStackTrace();
+      }
+      listOfNodeLists.add(nodes);
+      if (nodes == null) {
+        System.out.println("There is no path");
+      } else {
+        System.out.println("Route " + (i + 1));
+        System.out.println("---------------------------------");
+        for (Node node : nodes) {
+          String nodeId = node.getNodeId();
+          nodeIds.add(nodeId);
+          System.out.println(nodeId);
+        }
+        System.out.println("---------------------------------");
+      }
+      resultListsString += "{\"nodes\":" + gson.toJson(nodeIds) + "}";
+      if (i != thresholds.length - 1) {
+        resultListsString += ", ";
       }
     }
     System.out.println("All done!");
@@ -111,7 +124,7 @@ public class App extends NanoHTTPD {
         }
       ]
     */
-    String resultJson = "[{\"nodes\":" + gson.toJson(nodeIds) + "}]";
+    String resultJson = "[" + resultListsString + "]";
     Response response = newFixedLengthResponse(resultJson);
     response.addHeader("Access-Control-Allow-Origin", "*");
     return response;

@@ -34,19 +34,17 @@ public class DijkstraPaths {
 
     CreateNodes cn = new CreateNodes();
 
-    public List getShortestPaths(String source, String destination, List<Node> nodes) {
+    public List getShortestPath(String source, String destination, List<Node> nodes, double weight) {
       nodeIndexList = new ArrayList<String>();
       for (Node node : nodes) {
         nodeIndexList.add(node.getNodeId());
       }
       int sourceIndex = nodeIndexList.indexOf(source);
       int destinationIndex = nodeIndexList.indexOf(destination);
-      Graph graph = new Graph(nodes, getEdgesFromNodes(nodes, 70));
-      Dijkstra dijkstra = new Dijkstra(graph);
-      System.out.println("got d");
-      dijkstra.execute(nodes.get(sourceIndex));
-      System.out.println("got results");
-      return dijkstra.getPath(nodes.get(destinationIndex));
+      Graph graph1 = new Graph(nodes, getEdgesFromNodes(nodes, weight));
+      Dijkstra dijkstra1 = new Dijkstra(graph1);
+      dijkstra1.execute(nodes.get(sourceIndex));
+      return dijkstra1.getPath(nodes.get(destinationIndex));
     }
 
     // This method processes the Dijkstra Algorithm for the three shortest paths
@@ -77,7 +75,7 @@ public class DijkstraPaths {
         } else {
             System.out.println("1st path could not be determined between these nodes.");
         }
-        
+
 
         /* *********************************************************************
         * The following lines executes the Dijkstra Algorithm by retrieving the
@@ -99,7 +97,7 @@ public class DijkstraPaths {
             });
         } else {
             System.out.println("2nd path could not be determined between these nodes.");
-        } 
+        }
 
         /* *********************************************************************
         * The following lines executes the Dijkstra Algorithm by retrieving the
@@ -121,7 +119,7 @@ public class DijkstraPaths {
             });
         } else {
             System.out.println("3rd path could not be determined between these nodes.");
-        } 
+        }
 
     }
 

@@ -65,12 +65,12 @@ export default class Container extends React.Component {
     })
       .then(resp => resp.json())
       .then(json => {
-        const firstRoute = json[0];
         this.setState({
           ...data,
-          routes: data.routes.map(route => ({
+          routes: json.map((route, i) => ({
             ...route,
-            nodes: firstRoute.nodes // later change it to 1st, 2nd, 3rd route etc
+            color: data.routes[i].color,
+            nodes: route.nodes
           })),
           routesLoaded: true
         });

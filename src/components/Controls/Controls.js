@@ -253,7 +253,7 @@ export default class Controls extends React.Component {
             </div>
             <div className='route-select-control'>
               <strong>Visible Routes</strong>
-              <CheckboxGroup name="routes" value={visibleRoutes} onChange={routes => this.setState({visibleRoutes: routes})}>
+              <CheckboxGroup name="routes" value={visibleRoutes} onChange={routes => {console.log(routes); this.setState({visibleRoutes: routes})}}>
                 {this.defaultRoutes.map(route => (
                   <label style={{borderBottom: `${route.color} 5px solid`}} key={route.value}>
                     <Checkbox value={route} />
