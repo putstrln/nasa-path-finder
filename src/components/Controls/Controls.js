@@ -16,9 +16,9 @@ export default class Controls extends React.Component {
   constructor() {
     super();
     this.defaultRoutes = [
-      {value: 1, color: '#45FFFF', nodes: []},
-      {value: 2, color: '#D7FF5F', nodes: []},
-      {value: 3, color: '#EB9EFF', nodes: []},
+      {value: 1, color: 'green', nodes: []},
+      {value: 2, color: 'blue', nodes: []},
+      {value: 3, color: 'brown', nodes: []},
     ];
     this.state = {
       stationFile: null,
@@ -28,8 +28,6 @@ export default class Controls extends React.Component {
       handrailError: '',
       handrailLoading: false,
       strFiles: [],
-      startHandrail: null,
-      endHandrail: null,
       wingspan: 0,
       visibleRoutes: this.defaultRoutes,
     };
@@ -37,7 +35,6 @@ export default class Controls extends React.Component {
     this.handleStationFileRejected = this.handleStationFileRejected.bind(this);
     this.handleHandrailFilesDrop = this.handleHandrailFilesDrop.bind(this);
     this.handleStrFilesDrop = this.handleStrFilesDrop.bind(this);
-    this.handleHandrailChange = this.handleHandrailChange.bind(this);
     this.createHandrailOptions = this.createHandrailOptions.bind(this);
     this.handleWingspanChange = this.handleWingspanChange.bind(this);
     this.submit = this.submit.bind(this);
@@ -168,12 +165,6 @@ export default class Controls extends React.Component {
     });
   }
 
-  handleHandrailChange(startOrEnd, handrail) {
-    this.setState({
-      [`${startOrEnd}Handrail`]: handrail
-    });
-  }
-
   createHandrailOptions() {
     return this.state.handrailFiles.map(file => ({
       value: file.name.replace(/\.stl$/, ''),
@@ -187,8 +178,6 @@ export default class Controls extends React.Component {
 
   reset() {
     this.setState({
-      startHandrail: null,
-      endHandrail: null,
       wingspan: 0,
       visibleRoutes: this.defaultRoutes
     });
@@ -196,40 +185,16 @@ export default class Controls extends React.Component {
 
   submit() {
     const {
-      startHandrail,
-      endHandrail,
       visibleRoutes,
     } = this.state;
+    const {
+      startHandrail,
+      endHandrail,
+    } = this.props;
     this.props.onSubmit({
       startHandrail,
       endHandrail,
-      routes: visibleRoutes.map(route => ({
-        ...route,
-        nodes: [
-          'LAB_0259',
-          'LAB_0233',
-          'LAB_0268',
-          'LAB_0232',
-          'LAB_0237',
-          'LAB_0201',
-          'LAB_0295',
-          'LAB_0208',
-          'LAB_0239',
-          'LAB_0293',
-          'LAB_0280',
-          'LAB_0200',
-          'LAB_0267',
-          'LAB_0242',
-          'LAB_0288',
-          'LAB_0223',
-          'LAB_0277',
-          'LAB_0252',
-          'LAB_0270',
-          'LAB_0243',
-          'LAB_0216',
-          'LAB_0266',
-        ]
-      }))
+      routes: visibleRoutes
     });
   }
 
@@ -242,11 +207,14 @@ export default class Controls extends React.Component {
       handrailError,
       handrailLoading,
       strFiles,
-      startHandrail,
-      endHandrail,
       wingspan,
       visibleRoutes,
     } = this.state;
+    const {
+      startHandrail,
+      endHandrail,
+      onStartEndHandrailsChange,
+    } = this.props;
     return (
       <div className='Controls'>
         <Tabs>
@@ -261,14 +229,14 @@ export default class Controls extends React.Component {
                 placeholder='Select start handrail...'
                 value={startHandrail}
                 options={this.createHandrailOptions()}
-                onChange={option => this.handleHandrailChange('start', option)}
+                onChange={option => onStartEndHandrailsChange('start', option)}
               />
               <Select
                 name='endHandrail'
                 placeholder='Select end handrail...'
                 value={endHandrail}
                 options={this.createHandrailOptions()}
-                onChange={option => this.handleHandrailChange('end', option)}
+                onChange={option => onStartEndHandrailsChange('end', option)}
               />
             </div>
             <div className='wingspan-control'>
@@ -367,5 +335,6 @@ export default class Controls extends React.Component {
 Controls.propTypes = {
   onStationFileLoad: PropTypes.func.isRequired,
   onHandrailFilesLoad: PropTypes.func.isRequired,
-  onStrFilesLoad: PropTypes.func.isRequired
+  onStrFilesLoad: PropTypes.func.isRequired,
+  onStartEndHandrailsChange: PropTypes.func.isRequired,
 };

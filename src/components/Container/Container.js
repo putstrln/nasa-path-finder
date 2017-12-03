@@ -26,6 +26,7 @@ export default class Container extends React.Component {
     this.handleStrFilesLoad = this.handleStrFilesLoad.bind(this);
     this.handleSidebarOpen = this.handleSidebarOpen.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.handleStartEndHandrailsChanged = this.handleStartEndHandrailsChanged.bind(this);
   }
 
   handleStationFileLoad(stationFile) {
@@ -45,6 +46,12 @@ export default class Container extends React.Component {
 
   handleSidebarOpen(open) {
     this.setState({sidebarOpen: open});
+  }
+
+  handleStartEndHandrailsChanged(startOrEnd, handrail) {
+    this.setState({
+      [`${startOrEnd}Handrail`]: handrail
+    });
   }
 
   handleSubmit(data) {
@@ -99,7 +106,10 @@ export default class Container extends React.Component {
                 onStationFileLoad={this.handleStationFileLoad}
                 onHandrailFilesLoad={this.handleHandrailFilesLoad}
                 onStrFilesLoad={this.handleStrFilesLoad}
+                onStartEndHandrailsChange={this.handleStartEndHandrailsChanged}
                 onSubmit={this.handleSubmit}
+                startHandrail={startHandrail}
+                endHandrail={endHandrail}
               />
               {routesLoaded &&
                 <div>

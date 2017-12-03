@@ -82,49 +82,36 @@ public class App extends NanoHTTPD {
     }
     System.out.println("Start: " + rr.getStartHandrail());
     System.out.println("End: " + rr.getEndHandrail());
-    // ArrayList<Node> nodes = rr.getNodes();
     System.out.println("Running algorithm...");
     DijkstraPaths dp = new DijkstraPaths();
-    List<Node> nodes = dp.getShortestPaths(rr.getStartHandrail(), rr.getEndHandrail(), rr.getNodes());
-    for (Node node : nodes) {
-      System.out.println(node.toString());
+    ArrayList<String> nodeIds = new ArrayList<String>();
+    List<Node> nodes = new ArrayList<Node>();
+    try {
+      nodes = dp.getShortestPaths(rr.getStartHandrail(), rr.getEndHandrail(), rr.getNodes());
+    } catch (Exception e) {
+      System.out.println("There was an error running the algorithm");
+      e.printStackTrace();
+    }
+    if (nodes == null) {
+      System.out.println("There is no path");
+    } else {
+      for (Node node : nodes) {
+        String nodeId = node.getNodeId();
+        nodeIds.add(nodeId);
+        System.out.println(nodeId);
+      }
     }
     System.out.println("All done!");
     /*
       use nodes to process shortest path and return a json array of routes documented in architecture document. For example,
       [
         {
-          nodes: [],
+          nodes: [list of node ids],
           ...otherMetaDataProperties
         }
       ]
     */
-    String[] fakeNodes = {
-      "LAB_0259",
-      "LAB_0233",
-      "LAB_0268",
-      "LAB_0232",
-      "LAB_0237",
-      "LAB_0201",
-      "LAB_0295",
-      "LAB_0208",
-      "LAB_0239",
-      "LAB_0293",
-      "LAB_0280",
-      "LAB_0200",
-      "LAB_0267",
-      "LAB_0242",
-      "LAB_0288",
-      "LAB_0223",
-      "LAB_0277",
-      "LAB_0252",
-      "LAB_0270",
-      "LAB_0243",
-      "LAB_0216",
-      "LAB_0266",
-    };
-
-    String resultJson = "[{\"nodes\":" + gson.toJson(fakeNodes) + "}]";
+    String resultJson = "[{\"nodes\":" + gson.toJson(nodeIds) + "}]";
     Response response = newFixedLengthResponse(resultJson);
     response.addHeader("Access-Control-Allow-Origin", "*");
     return response;

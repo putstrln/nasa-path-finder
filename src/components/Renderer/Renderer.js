@@ -27,9 +27,9 @@ export default class Renderer extends React.Component {
     this.handrailModels = {};
     this.domEvents = null;
     this.handleHandrailMouseOver = this.handleHandrailMouseOver.bind(this);
-    this.domEventsMap = {
-      'mouseover': this.handleHandrailMouseOver
-    };
+    // this.domEventsMap = {
+    //   'mouseover': this.handleHandrailMouseOver
+    // };
     this.state = {
       hoveredHandrail: null
     };
@@ -82,7 +82,7 @@ export default class Renderer extends React.Component {
 
   componentWillUnMount() {
     window.addEventListener('resize', this.handleWindowResize, false);
-    unbindDomEventsFromMeshes(this.handrailModels, this.domEvents, this.domEventsMap);
+    // unbindDomEventsFromMeshes(this.handrailModels, this.domEvents, this.domEventsMap);
   }
 
   handleHandrailMouseOver(e) {
@@ -139,7 +139,7 @@ export default class Renderer extends React.Component {
         this.scene.add(handrailMesh);
       });
       strFiles.forEach(strFile => positionModelsBasedOnStrFile(this.handrailModels, strFile));
-      bindDomEventsToMeshes(this.handrailModels, this.domEvents, this.domEventsMap);
+      // bindDomEventsToMeshes(this.handrailModels, this.domEvents, this.domEventsMap);
     }
     this.animate();
   }
