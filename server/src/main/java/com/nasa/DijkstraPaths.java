@@ -1,4 +1,4 @@
-/* 
+/*
  * Copyright (C) 2017 jadovan
  *
  * This program is free software: you can redistribute it and/or modify
@@ -32,6 +32,15 @@ public class DijkstraPaths {
     private List<Edge> edges;
 
     CreateNodes cn = new CreateNodes();
+
+    public List getShortestPaths(String source, String destination, List<Node> nodes) {
+      int sourceIndex = nodes.indexOf(source);
+      int destinationIndex = nodes.indexOf(destination);
+      Graph graph1 = new Graph(nodes, getEdgesFromNodes(nodes, 54));
+      Dijkstra dijkstra1 = new Dijkstra(graph1);
+      dijkstra1.execute(nodes.get(sourceIndex));
+      return dijkstra1.getPath(nodes.get(destinationIndex));
+    }
 
     // This method processes the Dijkstra Algorithm for the three shortest paths
     public void ExecutePaths(String source, String destination) {
@@ -128,6 +137,27 @@ public class DijkstraPaths {
         }
 
         return nodes;
+    }
+
+    private List getEdgesFromNodes(List<Node> nodes, double weightThreshold) {
+      edges = new ArrayList<>();
+      ArrayList<String> nodeIndexList = new ArrayList<String>();
+      for (Node node : nodes) {
+        nodeIndexList.add(node.getNodeId());
+      }
+      for (int j = 0; j < nodes.size(); j++) {
+          for (int k = 0; k < nodes.size(); k++) {
+              String s0LabNodesJ = nodeIndexList.get(j);
+              String s0LabNodesK = nodeIndexList.get(k);
+              double weight = cn.node_distance_formula(nodes.get(j), nodes.get(k));
+              if (weight <= weightThreshold) {
+                  addLane("Edge_" + j, nodeIndexList.indexOf(s0LabNodesJ),
+                          nodeIndexList.indexOf(s0LabNodesK), weight);
+              }
+          }
+
+      }
+      return edges;
     }
 
     // This method adds lanes for the first shortest path
