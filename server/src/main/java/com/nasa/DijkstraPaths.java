@@ -41,12 +41,12 @@ public class DijkstraPaths {
       }
       int sourceIndex = nodeIndexList.indexOf(source);
       int destinationIndex = nodeIndexList.indexOf(destination);
-      Graph graph1 = new Graph(nodes, getEdgesFromNodes(nodes, 54));
-      Dijkstra dijkstra1 = new Dijkstra(graph1);
+      Graph graph = new Graph(nodes, getEdgesFromNodes(nodes, 70;
+      Dijkstra dijkstra = new Dijkstra(graph);
       System.out.println("got d");
-      dijkstra1.execute(nodes.get(sourceIndex));
+      dijkstra.execute(nodes.get(sourceIndex));
       System.out.println("got results");
-      return dijkstra1.getPath(nodes.get(destinationIndex));
+      return dijkstra.getPath(nodes.get(destinationIndex));
     }
 
     // This method processes the Dijkstra Algorithm for the three shortest paths
@@ -62,21 +62,22 @@ public class DijkstraPaths {
         ********************************************************************* */
         int sourceIndex = cn.s0LabHandHoldNodeIndexList.indexOf(source);
         int destinationIndex = cn.s0LabHandHoldNodeIndexList.indexOf(destination);
-        Graph graph1 = new Graph(pathNodes(), pathOneEdges());
-        Dijkstra dijkstra1 = new Dijkstra(graph1);
-        dijkstra1.execute(nodes.get(sourceIndex));
-        LinkedList<Node> path1 = dijkstra1.getPath(nodes.get(destinationIndex));
+        Graph graph = new Graph(pathNodes(), pathOneEdges());
+        Dijkstra dijkstra = new Dijkstra(graph);
+        dijkstra.execute(nodes.get(sourceIndex));
+        LinkedList<Node> path = dijkstra.getPath(nodes.get(destinationIndex));
 
         System.out.println("1st path from " + nodes.get(sourceIndex).getNodeId()
                 + " to " + nodes.get(destinationIndex).getNodeId());
 
-        if (path1 != null) {
-            path1.forEach((node1) -> {
+        if (path != null) {
+            path.forEach((node1) -> {
                 System.out.println(node1.getNodeId());
             });
         } else {
             System.out.println("1st path could not be determined between these nodes.");
         }
+        
 
         /* *********************************************************************
         * The following lines executes the Dijkstra Algorithm by retrieving the
@@ -84,21 +85,21 @@ public class DijkstraPaths {
         * This process is evaluated in the TestDijkstraPaths.java file utilizing
         * the Scanner method. This executes the second shortest path.
         ********************************************************************* */
-        Graph graph2 = new Graph(pathNodes(), pathTwoEdges());
-        Dijkstra dijkstra2 = new Dijkstra(graph2);
-        dijkstra2.execute(nodes.get(sourceIndex));
-        LinkedList<Node> path2 = dijkstra2.getPath(nodes.get(destinationIndex));
+        graph = new Graph(pathNodes(), pathTwoEdges());
+        dijkstra = new Dijkstra(graph);
+        dijkstra.execute(nodes.get(sourceIndex));
+        path = dijkstra.getPath(nodes.get(destinationIndex));
 
         System.out.println("\n2nd path from " + nodes.get(sourceIndex).getNodeId()
                 + " to " + nodes.get(destinationIndex).getNodeId());
 
-        if (path2 != null) {
-            path2.forEach((node2) -> {
+        if (path != null) {
+            path.forEach((node2) -> {
                 System.out.println(node2.getNodeId());
             });
         } else {
             System.out.println("2nd path could not be determined between these nodes.");
-        }
+        } 
 
         /* *********************************************************************
         * The following lines executes the Dijkstra Algorithm by retrieving the
@@ -106,21 +107,21 @@ public class DijkstraPaths {
         * This process is evaluated in the TestDijkstraPaths.java file utilizing
         * the Scanner method. This exeuctes the third shortest path.
         ********************************************************************* */
-        Graph graph3 = new Graph(pathNodes(), pathThreeEdges());
-        Dijkstra dijkstra3 = new Dijkstra(graph3);
-        dijkstra3.execute(nodes.get(sourceIndex));
-        LinkedList<Node> path3 = dijkstra3.getPath(nodes.get(destinationIndex));
+        graph = new Graph(pathNodes(), pathThreeEdges());
+        dijkstra = new Dijkstra(graph);
+        dijkstra.execute(nodes.get(sourceIndex));
+        path = dijkstra.getPath(nodes.get(destinationIndex));
 
         System.out.println("\n3rd path from " + nodes.get(sourceIndex).getNodeId()
                 + " to " + nodes.get(destinationIndex).getNodeId());
 
-        if (path3 != null) {
-            path3.forEach((node3) -> {
+        if (path != null) {
+            path.forEach((node3) -> {
                 System.out.println(node3.getNodeId());
             });
         } else {
             System.out.println("3rd path could not be determined between these nodes.");
-        }
+        } 
 
     }
 
