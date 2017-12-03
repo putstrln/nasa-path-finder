@@ -82,10 +82,10 @@ public class App extends NanoHTTPD {
     }
     System.out.println(rr.getStartHandrail());
     System.out.println(rr.getEndHandrail());
-    ArrayList<Node> nodes = rr.getNodes();
-    for (Node node : nodes) {
-      System.out.println(node.toString());
-    }
+    // ArrayList<Node> nodes = rr.getNodes();
+    // for (Node node : nodes) {
+    //   System.out.println(node.toString());
+    // }
     /*
       use nodes to process shortest path and return a json array of routes documented in architecture document. For example,
       [

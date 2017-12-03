@@ -10,10 +10,10 @@ import THREEx from 'utils/threex.domevents';
 const MMETER_PER_INCH = 0.00254;
 
 const defaultMaterialOptions = {
-  color: '#B0C4DE'
+  color: '#B0C4DE',
 };
 
-const loadMeshFromFile = (file, materialOptions = {}) => {
+const loadMeshFromFile = (file, materialOptions = {}, extraOptions = {scale: 1}) => {
   const loader = new THREE.STLLoader();
   const geometry = loader.parse(file);
   // center it to the bounding box
@@ -24,8 +24,9 @@ const loadMeshFromFile = (file, materialOptions = {}) => {
   });
   const mesh = new THREE.Mesh(geometry, material);
   // the models are in inches, scale back to meters
+  const scale = MMETER_PER_INCH * extraOptions.scale;
   // TODO: maybe guess units and scale automatically
-  mesh.scale.set(MMETER_PER_INCH, MMETER_PER_INCH, MMETER_PER_INCH);
+  mesh.scale.set(scale, scale, scale);
   return mesh;
 }
 

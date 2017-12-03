@@ -117,6 +117,7 @@ export default class Renderer extends React.Component {
     if (handrailFiles && Object.keys(handrailFiles).length > 0 && strFiles && strFiles.length > 0 ) {
       Object.entries(handrailFiles).forEach(([name, handrailFile]) => {
         let color = 'red';
+        let scale = 1;
         if (startHandrail && name === `${startHandrail.value}.stl`) {
           color = 'green';
         } else if (endHandrail && name === `${endHandrail.value}.stl`) {
@@ -127,11 +128,12 @@ export default class Renderer extends React.Component {
             route.nodes.forEach(node => {
               if (name === `${node}.stl`) {
                 color = route.color;
+                scale = 2;
               }
             });
           });
         }
-        const handrailMesh = loadMeshFromFile(handrailFile, {color});
+        const handrailMesh = loadMeshFromFile(handrailFile, {color}, {scale});
         handrailMesh.name = name;
         this.handrailModels[name] = handrailMesh;
         this.scene.add(handrailMesh);
