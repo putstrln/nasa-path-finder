@@ -10,6 +10,11 @@ import fetch from 'isomorphic-fetch';
 export default class Container extends React.Component {
   constructor() {
     super();
+    this.defaultRoutes = [
+      {value: 1, color: 'green', nodes: []},
+      {value: 2, color: 'blue', nodes: []},
+      {value: 3, color: 'violet', nodes: []},
+    ];
     this.state = {
       stationFile: null,
       handrailFiles: {},
@@ -17,16 +22,27 @@ export default class Container extends React.Component {
       sidebarOpen: true,
       startHandrail: null,
       endHandrail: null,
-      routes: [],
+      routes: this.defaultRoutes,
+      visibleRoutes: [1, 2, 3],
       routesLoaded: false,
+      wingspan: 0,
     };
     this.handrails = [];
+    this.handleWingspanChange = this.handleWingspanChange.bind(this);
     this.handleStationFileLoad = this.handleStationFileLoad.bind(this);
     this.handleHandrailFilesLoad = this.handleHandrailFilesLoad.bind(this);
     this.handleStrFilesLoad = this.handleStrFilesLoad.bind(this);
     this.handleSidebarOpen = this.handleSidebarOpen.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleStartEndHandrailsChanged = this.handleStartEndHandrailsChanged.bind(this);
+    this.handleVisibleRouteChanges = this.handleVisibleRouteChanges.bind(this);
+  }
+
+  reset() {
+    this.setState({
+      wingspan: 0,
+      routes: this.defaultRoutes
+    });
   }
 
   handleStationFileLoad(stationFile) {
@@ -35,6 +51,14 @@ export default class Container extends React.Component {
 
   handleHandrailFilesLoad(handrailFiles) {
     this.setState({handrailFiles});
+  }
+
+  handleWingspanChange(wingspan) {
+    this.setState({wingspan});
+  }
+
+  handleVisibleRouteChanges(visibleRoutes) {
+    this.setState({visibleRoutes});
   }
 
   handleStrFilesLoad(strFiles) {
@@ -55,6 +79,7 @@ export default class Container extends React.Component {
   }
 
   handleSubmit(data) {
+    const {routes} = this.state;
     fetch('http://localhost:8080', {
       method: 'post',
       body: JSON.stringify({
@@ -65,13 +90,14 @@ export default class Container extends React.Component {
     })
       .then(resp => resp.json())
       .then(json => {
+        const resultRoutes = json.map((route, i) => ({
+          ...route,
+          ...routes[i],
+          nodes: route.nodes
+        }));
         this.setState({
           ...data,
-          routes: json.map((route, i) => ({
-            ...route,
-            color: data.routes[i].color,
-            nodes: route.nodes
-          })),
+          routes: resultRoutes,
           routesLoaded: true
         });
       })
@@ -87,7 +113,9 @@ export default class Container extends React.Component {
       startHandrail,
       endHandrail,
       routes,
+      visibleRoutes,
       routesLoaded,
+      wingspan,
     } = this.state;
     return (
       <div className='Container'>
@@ -110,6 +138,12 @@ export default class Container extends React.Component {
                 onSubmit={this.handleSubmit}
                 startHandrail={startHandrail}
                 endHandrail={endHandrail}
+                routes={routes}
+                visibleRoutes={visibleRoutes}
+                onRoutesChange={this.handleVisibleRouteChanges}
+                onReset={this.reset}
+                wingspan={wingspan}
+                onWingspanChange={this.handleWingspanChange}
               />
               {routesLoaded &&
                 <div>
@@ -159,7 +193,7 @@ export default class Container extends React.Component {
             strFiles={strFiles}
             startHandrail={startHandrail}
             endHandrail={endHandrail}
-            routes={routes}
+            routes={routes.filter(r => visibleRoutes.includes(r.value)).reverse()}
           />
         </Sidebar>
       </div>
