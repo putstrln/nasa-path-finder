@@ -80,8 +80,8 @@ public class App extends NanoHTTPD {
     } catch (Exception e) {
       System.out.println(e.getMessage());
     }
-    System.out.println(rr.getStartHandrail());
-    System.out.println(rr.getEndHandrail());
+    System.out.println("Start: " + rr.getStartHandrail());
+    System.out.println("End: " +rr.getEndHandrail());
     // ArrayList<Node> nodes = rr.getNodes();
     // for (Node node : nodes) {
     //   System.out.println(node.toString());

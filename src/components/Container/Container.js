@@ -51,8 +51,8 @@ export default class Container extends React.Component {
     fetch('http://localhost:8080', {
       method: 'post',
       body: JSON.stringify({
-        startHandrail: data.startHandrail,
-        endHandrail: data.endHandrail,
+        startHandrail: data.startHandrail ? data.startHandrail.value : null,
+        endHandrail: data.endHandrail ? data.endHandrail.value : null,
         nodes: this.handrails
       })
     })
