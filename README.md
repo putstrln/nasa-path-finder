@@ -43,6 +43,10 @@ Native apps production builds *coming soon*.
 
 ## Backend
 
+* Prior to building for the backend, ensure file paths within CreateNodes.java 
+point to the correct locations for the source files.
+* CreateNodes.java lives in ```server/src/main/java/com/nasa/```.
+
 To build, ```yarn compile```
 
 To run, ```yarn start:server```
