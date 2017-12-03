@@ -1,4 +1,4 @@
-/*
+/* 
  * Copyright (C) 2017 jadovan
  *
  * This program is free software: you can redistribute it and/or modify
@@ -14,7 +14,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
-package com.nasa;
+package dijkstra;
 
 import java.util.Scanner;
 
@@ -37,12 +37,7 @@ public class TestDijkstraPaths {
         String destination = input.nextLine();
 
         System.out.println();
-        tdjk.testExecutePath1(source, destination);
-        System.out.println();
-        tdjk.testExecutePath2(source, destination);
-        System.out.println();
-        tdjk.testExecutePath3(source, destination);
-        System.out.println();
+        tdjk.ExecutePaths(source, destination);
     }
 
 }
