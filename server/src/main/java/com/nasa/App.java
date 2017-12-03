@@ -84,12 +84,12 @@ public class App extends NanoHTTPD {
     System.out.println("End: " + rr.getEndHandrail());
     System.out.println("Running algorithm...");
     DijkstraPaths dp = new DijkstraPaths();
-    ArrayList<String> nodeIds = new ArrayList<String>();
     ArrayList<List<Node>> listOfNodeLists = new ArrayList<List<Node>>();
     String resultListsString = "";
-    List<Node> nodes = new ArrayList<Node>();
     int[] thresholds = {54, 62, 70};
     for (int i = 0; i < thresholds.length; i++) {
+      List<Node> nodes = new ArrayList<Node>();
+      ArrayList<String> nodeIds = new ArrayList<String>();
       try {
         nodes = dp.getShortestPath(rr.getStartHandrail(), rr.getEndHandrail(), rr.getNodes(), thresholds[i]);
       } catch (Exception e) {

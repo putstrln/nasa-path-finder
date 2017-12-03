@@ -115,6 +115,7 @@ export default class Renderer extends React.Component {
       this.stationModelIsDirty = false;
     }
     if (handrailFiles && Object.keys(handrailFiles).length > 0 && strFiles && strFiles.length > 0 ) {
+      Object.values(this.handrailModels).forEach(model => this.scene.remove(model));
       Object.entries(handrailFiles).forEach(([name, handrailFile]) => {
         let color = 'red';
         let scale = 1;

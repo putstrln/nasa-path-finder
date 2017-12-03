@@ -36,10 +36,14 @@ export default class Container extends React.Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.handleStartEndHandrailsChanged = this.handleStartEndHandrailsChanged.bind(this);
     this.handleVisibleRouteChanges = this.handleVisibleRouteChanges.bind(this);
+    this.reset = this.reset.bind(this);
   }
 
   reset() {
     this.setState({
+      visibleRoutes: [1, 2, 3],
+      startHandrail: null,
+      endHandrail: null,
       wingspan: 0,
       routes: this.defaultRoutes
     });
