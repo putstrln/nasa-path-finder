@@ -223,11 +223,11 @@ export default class Controls extends React.Component {
               Wingspan: {wingspan} ft
               <Slider value={wingspan}
                 onChange={onWingspanChange}
-                min={0}
-                max={100}
+                min={4}
+                max={7}
                 marks={{
-                  0: '0 ft',
-                  100: '100 ft'
+                  4: '4 ft',
+                  7: '7 ft'
                 }}
               />
             </div>
@@ -243,8 +243,8 @@ export default class Controls extends React.Component {
               </CheckboxGroup>
             </div>
             <div className='action-control'>
-              <button onClick={this.submit}>Go</button>
-              <button onClick={onReset}>Reset</button>
+              <button className='button-primary' onClick={this.submit}>Go</button>
+              <button className='button-primary' onClick={onReset}>Reset</button>
             </div>
           </TabPanel>
           <TabPanel>

@@ -1,0 +1,47 @@
+body {
+  background: black;
+  overflow-x: hidden;
+  margin: 0;
+  font-family: 'Open Sans', Arial, sans-serif;
+  font-size: 14px;
+  color: $darkgrey;
+}
+
+/* Elements */
+
+.action-control {
+	display: flex;
+}
+
+a[class^="button-"], button[class^="button-"] {
+	color: $darkgrey;
+	font-weight: bold;
+	padding: 5px;
+
+	.action-control & {
+		flex-grow: 1;	
+	}
+	.action-control &:first-child {
+		margin-right: 5px;
+	}
+	&:hover {
+		background: darken($lightgrey, 20%);
+	}
+}
+
+button.button-primary, a.button-primary {
+	color: $darkgrey;
+	background: $lightgrey;
+	background-image: linear-gradient(-180deg, $lightgrey 0%, $mediumgrey 100%);
+	border: 1px solid $grey;
+	box-shadow: 0 1px 2px 0 rgba(0,0,0,0.20), inset 0 2px 0 0 $white;
+	border-radius: 6px;
+}
+
+button.button-secondary, a.button-secondary {
+	color: $darkgrey;
+	background-image: linear-gradient(-180deg, $secondarylightgrey 0%, $secondarydarkgrey 100%);
+	border: 1px solid $grey;
+	box-shadow: 0 1px 2px 0 rgba(0,0,0,0.20), inset 0 2px 0 0 $white;
+	border-radius: 6px;
+}
