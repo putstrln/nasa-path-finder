@@ -65,6 +65,14 @@ main {
   .route-select-control {
     margin-top: 2em;
   }
+  .route-select-container {
+  	margin-top: 10px;
+  	display: flex;
+
+  	label {
+  		flex-grow: 1;
+  	}
+  }
   .wingspan-control {
   	padding: 0 12px;
   }
