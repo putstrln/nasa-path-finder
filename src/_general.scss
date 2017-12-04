@@ -48,11 +48,13 @@ button.button-secondary, a.button-secondary {
 }
 
 .drop-upload {
+	box-sizing: border-box;
 	width: 100%;
 	height: 100px;
-	background: $lightgrey;
+	background: $grey;
 	border: 1px solid $black;
-	font-size: 10px;
+	font-size: 12px;
+	padding: 5px;
 	word-wrap: break-word;
 	margin-bottom: 20px;
 }
