@@ -126,14 +126,14 @@ export default class Container extends React.Component {
         <StickyHeader
           header={
             <div className='header'>
-              <div className='sidebar-anchor' onClick={() => this.handleSidebarOpen(!sidebarOpen)}>Sidebar</div>
-              <div>NASA EVA Navigator</div>
+              <div className='logo'><h1>NASA EVA Navigator</h1></div>
+              <div className='sidebar-anchor' onClick={() => this.handleSidebarOpen(!sidebarOpen)}>[Toggle sidebar]</div>
             </div>
           }
         />
         <Sidebar
           sidebar={
-            <div>
+            <div className='sidebar-wrapper'>
               <Controls
                 onStationFileLoad={this.handleStationFileLoad}
                 onHandrailFilesLoad={this.handleHandrailFilesLoad}

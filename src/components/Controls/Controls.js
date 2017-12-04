@@ -250,17 +250,13 @@ export default class Controls extends React.Component {
           <TabPanel>
             <div className='file-controls'>
               <div className='station-controls'>
-                <div>Drag & drop the station stl file to render...</div>
+                <p>Drag & drop or click to upload <br /> the station stl file to render...</p>
                 {stationLoading && <div style={{color: 'blue'}}>stationLoading..</div>}
                 <Dropzone
+                  className="drop-upload"
                   onDrop={this.handleStationFileDrop}
                   multiple={false}
                   onDropRejected={this.handleStationFileRejected}
-                  style={{
-                    width: '100px',
-                    height: '100px',
-                    border: '1px dotted black'
-                  }}
                   accept='.stl'
                 >
                   <div style={{color: 'red'}}>{stationError}</div>
@@ -270,16 +266,12 @@ export default class Controls extends React.Component {
                 </Dropzone>
               </div>
               <div className='handrails-controls'>
-                <div>Drag & drop the handrail stl files to render...</div>
+                <p>Drag & drop or click to upload <br /> the handrail stl files to render...</p>
                 {handrailLoading && <div style={{color: 'blue'}}>handrail loading..</div>}
                 <Dropzone
+                  className="drop-upload"
                   onDrop={this.handleHandrailFilesDrop}
                   onDropRejected={this.handleHandrailFilesRejected}
-                  style={{
-                    width: '100px',
-                    height: '100px',
-                    border: '1px dotted black'
-                  }}
                   accept='.stl'
                 >
                   <div style={{color: 'red'}}>{handrailError}</div>
@@ -289,14 +281,10 @@ export default class Controls extends React.Component {
                 </Dropzone>
               </div>
               <div className='str-controls'>
-                <div>Drag & drop one or more str files to position the handrails...</div>
+                <p>Drag & drop or click to upload <br /> one or more str files to position the handrails...</p>
                 <Dropzone
+                  className="drop-upload"
                   onDrop={this.handleStrFilesDrop}
-                  style={{
-                    width: '100px',
-                    height: '100px',
-                    border: '1px dotted black'
-                  }}
                   accept='.str'
                 >
                   {strFiles.map(strFile =>

@@ -20,10 +20,19 @@ main {
   display: flex;
   .header {
     display: flex;
-    justify-content: space-around;
-    background: white;
-    height: 2em;
+    justify-content: flex-start;
     align-items: center;
+    background: $lightgrey;
+    padding: 1em;
+    border-bottom: 1px solid $grey;
+
+    .logo {
+		margin-right: 20px;
+		h1 {
+			margin: 0;
+		}
+    }
+
     .sidebar-anchor {
       cursor: pointer;
     }
@@ -38,16 +47,28 @@ main {
   }
 }
 
+.sidebar-wrapper {
+	background: $lightgrey;
+	height: 100%;
+}
+
 .Controls {
-  padding: 1em;
-  min-width: 15%;
+  padding: 4.5em 1em 1em;
+  min-width: 335px;
   display: flex;
   flex-direction: column;
+
+	.handrails-selector, .route-select-control, .wingspan-control, .action-control {
+		padding-bottom: 30px;
+	}
+
   .route-select-control {
     margin-top: 2em;
   }
+  .wingspan-control {
+  	padding: 0 12px;
+  }
   .action-control {
-    margin-top: 1em;
     display: flex;
     justify-content: space-around;
     button {
@@ -60,10 +81,10 @@ main {
     justify-content: space-around;
   }
   .handrails-selector {
+  	margin-top: 20px;
     .Select:first-of-type {
       margin-bottom: 1em;
     }
-    margin-bottom: 1em;
   }
 }
 
