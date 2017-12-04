@@ -11,9 +11,9 @@ export default class Container extends React.Component {
   constructor() {
     super();
     this.defaultRoutes = [
-      {value: 1, color: 'green', nodes: []},
-      {value: 2, color: 'blue', nodes: []},
-      {value: 3, color: 'violet', nodes: []},
+      {value: 1, color: '#45FFFF', nodes: []},
+      {value: 2, color: '#D7FF5F', nodes: []},
+      {value: 3, color: '#EB9EFF', nodes: []},
     ];
     this.state = {
       stationFile: null,

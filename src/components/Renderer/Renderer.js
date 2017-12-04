@@ -120,9 +120,9 @@ export default class Renderer extends React.Component {
         let color = 'red';
         let scale = 1;
         if (startHandrail && name === `${startHandrail.value}.stl`) {
-          color = 'green';
-        } else if (endHandrail && name === `${endHandrail.value}.stl`) {
           color = 'black';
+        } else if (endHandrail && name === `${endHandrail.value}.stl`) {
+          color = 'green';
         } else {
           // refactor and exit early or just loop routes outside for performance
           routes.forEach(route => {
