@@ -86,7 +86,7 @@ public class App extends NanoHTTPD {
     DijkstraPaths dp = new DijkstraPaths();
     ArrayList<List<Node>> listOfNodeLists = new ArrayList<List<Node>>();
     String resultListsString = "";
-    int[] thresholds = {54, 62, 70};
+    int[] thresholds = {46, 54, 62};
     for (int i = 0; i < thresholds.length; i++) {
       List<Node> nodes = new ArrayList<Node>();
       ArrayList<String> nodeIds = new ArrayList<String>();

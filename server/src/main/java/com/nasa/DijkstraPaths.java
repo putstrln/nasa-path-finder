@@ -174,7 +174,7 @@ public class DijkstraPaths {
                 String s0LabNodesJ = cn.s0LabHandHoldNodeIndexList.get(j);
                 String s0LabNodesK = cn.s0LabHandHoldNodeIndexList.get(k);
                 double weight = cn.node_distance_formula(cn.s0LabHandHoldNodeList.get(j), cn.s0LabHandHoldNodeList.get(k));
-                if (weight <= 54) {
+                if (weight <= 46) {
                     addLane("Edge_" + j, cn.s0LabHandHoldNodeIndexList.indexOf(s0LabNodesJ),
                             cn.s0LabHandHoldNodeIndexList.indexOf(s0LabNodesK), weight);
                 }
@@ -195,7 +195,7 @@ public class DijkstraPaths {
                 String s0LabNodesJ = cn.s0LabHandHoldNodeIndexList.get(j);
                 String s0LabNodesK = cn.s0LabHandHoldNodeIndexList.get(k);
                 double weight = cn.node_distance_formula(cn.s0LabHandHoldNodeList.get(j), cn.s0LabHandHoldNodeList.get(k));
-                if (weight <= 62) {
+                if (weight <= 54) {
                     addLane("Edge_" + j, cn.s0LabHandHoldNodeIndexList.indexOf(s0LabNodesJ),
                             cn.s0LabHandHoldNodeIndexList.indexOf(s0LabNodesK), weight);
                 }
@@ -216,7 +216,7 @@ public class DijkstraPaths {
                 String s0LabNodesJ = cn.s0LabHandHoldNodeIndexList.get(j);
                 String s0LabNodesK = cn.s0LabHandHoldNodeIndexList.get(k);
                 double weight = cn.node_distance_formula(cn.s0LabHandHoldNodeList.get(j), cn.s0LabHandHoldNodeList.get(k));
-                if (weight <= 70) {
+                if (weight <= 62) {
                     addLane("Edge_" + j, cn.s0LabHandHoldNodeIndexList.indexOf(s0LabNodesJ),
                             cn.s0LabHandHoldNodeIndexList.indexOf(s0LabNodesK), weight);
                 }
