@@ -41,7 +41,12 @@ Now it will be available at <http://localhost:3000>.
 For windows, install docker https://docs.docker.com/toolbox/toolbox_install_windows/.
 Open up kitematic.
 Search for nasa-path-finder and download it.
+In the settings, it should look something like this:
+
 In the preview window, clicking popup button will launch the app in the browser.
+![Port Config](https://github.com/lovetostrike/nasa-path-finder/blob/master/Capture.PNG).
+Make sure both docker & published ip has 8080 port open.
+Save and restart the container.
 
 Native apps production builds *coming soon*.
 
