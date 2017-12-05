@@ -84,7 +84,7 @@ export default class Container extends React.Component {
 
   handleSubmit(data) {
     const {routes} = this.state;
-    fetch('http://localhost:8080', {
+    fetch(window.location.protocol + '//' + window.location.hostname + ':8080', {
       method: 'post',
       body: JSON.stringify({
         startHandrail: data.startHandrail ? data.startHandrail.value : null,

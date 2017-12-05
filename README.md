@@ -30,11 +30,18 @@ yarn build
 and you get the static files under public.
 
 There's a docker image with a web server if you want it to work out-of-the-box.
+
+For linux and mac,
 Install docker for your box and
 ```
-docker run -p 8080:8080 lovetostrike/nasa-path-finder
+docker run -p 8080:8080 -p 3000:3000 lovetostrike/nasa-path-finder
 ```
-Now it will be available at <http://localhost:8080>.
+Now it will be available at <http://localhost:3000>.
+
+For windows, install docker https://docs.docker.com/toolbox/toolbox_install_windows/.
+Open up kitematic.
+Search for nasa-path-finder and download it.
+In the preview window, clicking popup button will launch the app in the browser.
 
 Native apps production builds *coming soon*.
 
