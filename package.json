@@ -9,7 +9,7 @@
     "lint": "eslint --ext js --ext jsx src || exit 0",
     "start": "webpack-dashboard -- webpack-dev-server",
     "start:native": "electron .",
-    "start:web": "http-server",
+    "start:web": "http-server -p 3000",
     "test": "NODE_ENV=test jest",
     "compile": "cd server && mvn compile && cd -",
     "start:server": "cd server && mvn exec:java -Dexec.mainClass='com.nasa.App' && cd -",
