@@ -7,29 +7,47 @@ Demo is available at  <https://lovetostrike.github.io/nasa-path-finder/demo.html
 
 Install yarn if you don't have it, <https://yarnpkg.com/lang/en/docs/install/#linux-tab>.
 
-Install dependencies if you haven't,
+Install java 8 & maven for your platform.
+
+#### Frontend
+Install yarn dependencies if you haven't,
 ```sh
 yarn
 ```
 
-Start dev server
+Start dev frontend server
 ```sh
 yarn start
 ```
-and go to <http://localhost:3000> to see the app.
 
-To run native app for development, build it first and then,
-```yarn build && yarn start:native```
+#### Backend
+
+* Prior to building for the backend, ensure file paths within CreateNodes.java
+point to the correct locations for the source files.
+* CreateNodes.java lives in ```server/src/main/java/com/nasa/```.
+
+In another terminal, start dev backend server, (you need to run this every code change since it's Java). We can improve it to watch the files changes and use hot swap.
+
+To build, ```yarn compile```
+
+To run, ```yarn start:server```
+
+To do both, ```yarn compile:start:server```
+
+Go to <http://localhost:3000> to see the app.
 
 ## Production Deployment
 
+#### Web build
 To build for web
 ```
 yarn build
+yarn start:web & yarn start:server
 ```
-and you get the static files under public.
+and you get the static files under public which can be deployed on any server.
 
-There's a docker image with a web server if you want it to work out-of-the-box.
+#### Docker build
+There's a docker image with a web server if you want the app to work out-of-the-box and skip any setup.
 
 For linux and mac,
 Install docker for your box and
@@ -48,22 +66,8 @@ In the preview window, clicking popup button will launch the app in the browser.
 Make sure both docker & published ip has 8080 port open.
 Save and restart the container.
 
-Native apps production builds *coming soon*.
-
 ## Test
 ```yarn test```
-
-## Backend
-
-* Prior to building for the backend, ensure file paths within CreateNodes.java 
-point to the correct locations for the source files.
-* CreateNodes.java lives in ```server/src/main/java/com/nasa/```.
-
-To build, ```yarn compile```
-
-To run, ```yarn start:server```
-
-To do both, ```yarn compile:start:server```
 
 ## Structure
 
